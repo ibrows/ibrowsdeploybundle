@@ -1,3 +1,18 @@
 {
-    
+    "name": "ibrows/deploy-bundle",
+    "description": "Bundle for executing commands after deployment or composer install based on current server and/or environment",
+    "keywords": ["ibrows", "deploy", "deployment"],
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": { "Ibrows\\DeployBundle\\": "" }
+    },
+    "require": {
+        "symfony/config": "~2.3.0",
+        "symfony/http-kernel": "~2.3.0",
+        "symfony/dependency-injection": "~2.3.0",
+        "symfony/process": "~2.3.0",
+        "symfony/console": "~2.3.0",
+        "symfony/framework-bundle": "~2.3.0"
+    }
 }

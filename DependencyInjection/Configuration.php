@@ -18,9 +18,20 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('environment')->cannotBeEmpty()->end()
-                ->scalarNode('server')->cannotBeEmpty()->end()
-
+                ->scalarNode('environment')->isRequired()->cannotBeEmpty()->end()
+                ->scalarNode('server')->isRequired()->cannotBeEmpty()->end()
+                ->arrayNode('tags')->useAttributeAsKey('name')
+                    ->prototype('array')
+                        ->children()
+                            ->arrayNode('servers')
+                                ->prototype('scalar')->end()
+                            ->end()
+                            ->arrayNode('environments')
+                                ->prototype('scalar')->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end()
         ;
 

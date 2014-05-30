@@ -2,33 +2,35 @@
 
 namespace Ibrows\DeployBundle\Environment;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Ibrows\DeployBundle\Environment\Command\CommandInterface;
+
 class EnvironmentManager implements EnvironmentManagerInterface
 {
-    /**
-     * @var string
-     */
-    protected $environment;
-
     /**
      * @var string
      */
     protected $server;
 
     /**
-     * @var array
+     * @var string
+     */
+    protected $environment;
+
+    /**
+     * @var CommandInterface[]|ArrayCollection
      */
     protected $commands;
 
     /**
-     * @param string $environment
      * @param string $server
-     * @param array $commands
+     * @param string $environment
      */
-    public function __construct($environment, $server, array $commands)
+    public function __construct($server, $environment)
     {
-        $this->environment = $environment;
         $this->server = $server;
-        $this->commands = $commands;
+        $this->environment = $environment;
+        $this->commands = new ArrayCollection();
     }
 
     /**
@@ -48,10 +50,60 @@ class EnvironmentManager implements EnvironmentManagerInterface
     }
 
     /**
-     * @return array
+     * @param CommandInterface $command
      */
-    public function getCommands()
+    public function addCommand(CommandInterface $command)
     {
-        return $this->commands;
+        $this->commands->add($command);
+    }
+
+    /**
+     * @param CommandInterface $command
+     */
+    public function removeCommand(CommandInterface $command)
+    {
+        $this->commands->removeElement($command);
+    }
+
+    /**
+     * @param CommandInterface $command
+     * @return bool
+     */
+    public function hasCommand(CommandInterface $command)
+    {
+        return $this->commands->contains($command);
+    }
+
+    /**
+     * @param string $environment
+     */
+    public function setEnvironment($environment)
+    {
+        $this->environment = $environment;
+    }
+
+    /**
+     * @param string $server
+     */
+    public function setServer($server)
+    {
+        $this->server = $server;
+    }
+
+    /**
+     * @param string $server
+     * @param string $environment
+     * @return CommandInterface[]
+     */
+    public function getCommands($server = null, $environment = null)
+    {
+        $server = $server ?: $this->server;
+        $environment = $environment ?: $this->environment;
+
+        foreach($this->commands as $command){
+            if($command->accept($server, $environment)){
+                yield $command;
+            }
+        }
     }
 }

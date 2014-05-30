@@ -14,6 +14,8 @@ class RunCommand extends ContainerAwareCommand
     {
         $this
             ->setName('ibrows:deploy:run')
+            ->addOption('server')
+            ->addOption('environment')
             ->setDescription('Runs the commands for given server and environment')
         ;
     }
@@ -26,13 +28,10 @@ class RunCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $environmentManager = $this->getEnvironmentManager();
-
-        foreach($environmentManager->getCommands() as $command){
-            $output->writeln('Execute '. $command);
-            $process = new Process($command);
-            $process->run();
-
-            $output->writeln($process->getOutput());
+        $application = $this->getApplication();
+        foreach($environmentManager->getCommands($input->getOption('server'), $input->getOption('environment')) as $command){
+            $output->writeln('<comment>'. date('H:i:s') .' [IbrowsDeployBundle]</comment> <info>'. $command->getName() .'</info>');
+            $command->run($output);
         }
     }
 

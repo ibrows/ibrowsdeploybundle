@@ -3,12 +3,31 @@
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
-
     <services>
+        <!-- EnvironmentManager -->
         <service id="ibrows_deploy.environment.manager" class="Ibrows\DeployBundle\Environment\EnvironmentManager">
-            <argument>environment</argument>
-            <argument>server</argument>
+            <argument>%ibrows_deploy.server%</argument>
+            <argument>%ibrows_deploy.environment%</argument>
+        </service>
+
+        <!-- SymfonyCommands -->
+        <service id="ibrows_deploy.environment.command.assetic" class="Ibrows\DeployBundle\Environment\Command\AsseticDumpCommand">
+            <argument>%kernel.root_dir%</argument>
+            <tag name="ibrows_deploy.command" priority="200" />
+        </service>
+
+        <service id="ibrows_deploy.environment.command.cacheclear" class="Ibrows\DeployBundle\Environment\Command\CacheClearCommand">
+            <argument>%kernel.root_dir%</argument>
+            <tag name="ibrows_deploy.command" priority="150" />
+        </service>
+
+        <!-- ShellCommands -->
+        <service id="ibrows_deploy.environment.command.databasedump" class="Ibrows\DeployBundle\Environment\Command\DatabaseDumpCommand">
+            <argument>/Users/mikemeier/Documents/webpages/apollonia/dump.sql</argument>
+            <argument>%database_name%</argument>
+            <argument>%database_user%</argument>
+            <argument>%database_password%</argument>
+            <tag name="ibrows_deploy.command" priority="100" />
         </service>
     </services>
-
 </container>

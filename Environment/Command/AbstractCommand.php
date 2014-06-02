@@ -62,9 +62,7 @@ abstract class AbstractCommand implements CommandInterface
      */
     protected function execute($cmd, OutputInterface $output)
     {
-        $php = escapeshellarg($this->getPhpExecutablePath());
-
-        $process = new Process($php .' '. $cmd, null, null, null, $this->getTimeout());
+        $process = new Process($cmd, null, null, null, $this->getTimeout());
 
         $process->run(function($type, $buffer)use($output){
             $output->writeln($buffer);
@@ -109,23 +107,5 @@ abstract class AbstractCommand implements CommandInterface
     protected function getTimeout()
     {
         return $this->timeout ?: 300;
-    }
-
-    /**
-     * @return string
-     * @throws \RuntimeException
-     */
-    protected function getPhpExecutablePath()
-    {
-        if($this->phpExecutablePath){
-            return $this->phpExecutablePath;
-        }
-
-        $phpFinder = new PhpExecutableFinder();
-        if(!$phpPath = $phpFinder->find()){
-            throw new \RuntimeException('The php executable could not be found, add it to your PATH environment variable and try again');
-        }
-
-        return $phpPath;
     }
 }

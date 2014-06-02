@@ -3,6 +3,7 @@
 namespace Ibrows\DeployBundle\Environment\Command;
 
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\PhpExecutableFinder;
 
 abstract class AbstractSymfonyCommand extends AbstractCommand
 {
@@ -48,14 +49,34 @@ abstract class AbstractSymfonyCommand extends AbstractCommand
      */
     public function run(OutputInterface $output)
     {
+        $php = escapeshellarg($this->getPhpExecutablePath());
+
         $return = 0;
         foreach($this->symfonyRunEnvironments as $env){
             $console = escapeshellarg($this->kernelRootDir.'/console');
-            $cmd = $console .' '. $this->getCommand().' --env='. $env;
+            $cmd = $php .' '. $console .' '. $this->getCommand().' --env='. $env;
             if($code = $this->execute($cmd, $output)){
                 $return = $code;
             }
         }
         return $return;
+    }
+
+    /**
+     * @return string
+     * @throws \RuntimeException
+     */
+    protected function getPhpExecutablePath()
+    {
+        if($this->phpExecutablePath){
+            return $this->phpExecutablePath;
+        }
+
+        $phpFinder = new PhpExecutableFinder();
+        if(!$phpPath = $phpFinder->find()){
+            throw new \RuntimeException('The php executable could not be found, add it to your PATH environment variable and try again');
+        }
+
+        return $phpPath;
     }
 }

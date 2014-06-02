@@ -99,11 +99,12 @@ class EnvironmentManager implements EnvironmentManagerInterface
     {
         $server = $server ?: $this->server;
         $environment = $environment ?: $this->environment;
-
+        $commands = array();
         foreach($this->commands as $command){
             if($command->accept($server, $environment)){
-                yield $command;
+                $commands[] = $command;
             }
         }
+        return $commands;
     }
 }

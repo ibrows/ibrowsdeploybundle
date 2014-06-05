@@ -72,7 +72,7 @@ class EnvironmentManager implements EnvironmentManagerInterface
         foreach($commands as $options){
             /** @var CommandInterface $command */
             $command = $options['command'];
-            $output->writeln('Execute <info>'. $command->getName() .'</info> <comment>'. ($options['args'] ? json_encode($options['args']) : null).'</comment>');
+            $output->writeln('IbrowsDeployBundle: <info>'. $command->getName() .'</info> <comment>'. ($options['args'] ? json_encode($options['args']) : null).'</comment>');
 
             $command->setRunServer($server);
             $command->setRunEnvironment($environment);

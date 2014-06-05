@@ -73,5 +73,4 @@ Parameters (DO NOT SET DEFAULT VALUES HERE!) If you set default server to 'local
 ```yaml
 deploy_server: ~
 deploy_environment: ~
-database_backup_path: ~
 ```

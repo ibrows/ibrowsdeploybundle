@@ -26,6 +26,8 @@ ibrows_deploy:
             asseticdump:
                 - {priority: 4, args: { symfonyEnv: dev }}
                 - {priority: 5, args: { symfonyEnv: prod }}
+            doctrineschemaupdate:
+                - {priority: 6, args: { symfonyEnv: dev, force: true, complete: true, dumpSql: false }}
         atrila_test:
             mysqldump:
                 - {priority: 1, args: { path: ~/backup/database }}

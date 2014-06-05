@@ -91,14 +91,13 @@ class OpCacheResetCommand extends AbstractCommand
      */
     protected function getArguments(array $args = array())
     {
-        return array_merge(array(
+        return array_merge(parent::getArguments(),array(
             'host' => $this->host,
             'port' => $this->port,
             'baseUrl' => $this->baseUrl,
             'method' => $this->method,
             'routeName' => $this->routeName,
             'routeParameters' => $this->routeParameters,
-            'timeout' => $this->timeout
         ), $args);
     }
 
@@ -152,6 +151,10 @@ class OpCacheResetCommand extends AbstractCommand
         ){
             throw new \RuntimeException("OpCache-Reset WebServer Result not valid json - maybe route is protected over security.yml? -> Check ". $url);
         }
+        if($args['output']){
+            $output->writeln(print_r($result,true));
+        }
+
     }
 
     /**

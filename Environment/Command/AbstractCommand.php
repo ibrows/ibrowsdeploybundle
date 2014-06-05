@@ -13,6 +13,10 @@ abstract class AbstractCommand implements CommandInterface
      * @var int
      */
     protected $timeout = 300;
+    /**
+     * @var boolean
+     */
+    protected $output = true;
 
     /**
      * @var string
@@ -30,6 +34,14 @@ abstract class AbstractCommand implements CommandInterface
     public function __construct($timeout = 300)
     {
         $this->timeout = $timeout;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getOutput()
+    {
+        return $this->output;
     }
 
     /**
@@ -55,7 +67,17 @@ abstract class AbstractCommand implements CommandInterface
      */
     public function run(array $args, OutputInterface $output)
     {
-        return $this->execute($this->getCommand($this->getArguments($args)));
+        $args = $this->getArguments($args);
+        $callback = $this->getCallback($args,$output);
+        return $this->execute($this->getCommand($args, $callback));
+    }
+
+    protected function  getCallback($args, OutputInterface $output ){
+        $callback = null;
+        if($args['output']) {
+            $callback = function($type,$buffer) use ($output) { $output->write($buffer);};
+        }
+        return $callback;
     }
 
     /**
@@ -65,7 +87,8 @@ abstract class AbstractCommand implements CommandInterface
     protected function getArguments(array $args = array())
     {
         return array_merge(array(
-            'timeout' => $this->timeout
+            'timeout' => $this->getTimeout(),
+            'output' => $this->getOutput(),
         ), $args);
     }
 

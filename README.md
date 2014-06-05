@@ -78,3 +78,36 @@ Parameters (DO NOT SET DEFAULT VALUES HERE!) If you set default server to 'local
 deploy_server: ~
 deploy_environment: ~
 ```
+
+composer.json
+```json
+"require" : {
+    "ibrows/deploy-bundle": "dev-master@dev"
+},
+"scripts" : {
+    "post-install-cmd" : [
+        "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+        "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+        "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+        "Ibrows\\DeployBundle\\Composer\\ScriptHandler::deploy"
+    ],
+    "post-update-cmd" : [
+        "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+        "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+        "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+        "Ibrows\\DeployBundle\\Composer\\ScriptHandler::deploy"
+    ]
+},
+"repositories": [
+    {
+        "type": "vcs",
+        "url": "git@codebasehq.com:ibrows/ibrowsch/ibrowsdeploybundle.git"
+    }
+]
+```
+
+AppKernel
+
+```php
+new Ibrows\DeployBundle\IbrowsDeployBundle()
+```

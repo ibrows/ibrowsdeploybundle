@@ -2,10 +2,11 @@
 
 namespace Ibrows\DeployBundle\Environment\Command;
 
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouterInterface;
 
-class OpCacheResetCommand extends AbstractCommand
+class OpCacheResetCommand implements CommandInterface
 {
     /**
      * @var RouterInterface
@@ -48,6 +49,16 @@ class OpCacheResetCommand extends AbstractCommand
     protected $routeParameters = array();
 
     /**
+     * @var int
+     */
+    protected $timeout = 300;
+
+    /**
+     * @var string
+     */
+    const JSON_RESPONSE_KEY = 'opcacheresetsuccess';
+
+    /**
      * @param RouterInterface $router
      * @param string $secret
      * @param string $host
@@ -68,7 +79,15 @@ class OpCacheResetCommand extends AbstractCommand
         $this->method = $method;
         $this->routeName = $routeName;
         $this->routeParameters = $routeParameters;
-        parent::__construct($timeout);
+        $this->timeout = $timeout;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSecret()
+    {
+        return $this->secret;
     }
 
     /**
@@ -77,23 +96,35 @@ class OpCacheResetCommand extends AbstractCommand
      */
     protected function getArguments(array $args = array())
     {
-        return array_merge(parent::getArguments(), array(
+        return array_merge(array(
             'host' => $this->host,
             'port' => $this->port,
             'baseUrl' => $this->baseUrl,
             'method' => $this->method,
             'routeName' => $this->routeName,
             'routeParameters' => $this->routeParameters,
+            'timeout' => $this->timeout
         ), $args);
     }
 
     /**
-     * @param array $args
-     * @throws \RuntimeException
      * @return string
      */
-    protected function getCommand(array $args)
+    public function getName()
     {
+        return 'opcachereset';
+    }
+
+    /**
+     * @param array $args
+     * @param OutputInterface $output
+     * @throws \RuntimeException
+     * @return void
+     */
+    public function run(array $args, OutputInterface $output)
+    {
+        $args = $this->getArguments($args);
+
         $context = new RequestContext();
 
         if(!$args['host']){
@@ -107,8 +138,7 @@ class OpCacheResetCommand extends AbstractCommand
         $router = $this->router;
         $router->setContext($context);
 
-        $route = $router->generate($this->routeName, $this->routeParameters, $router::ABSOLUTE_URL);
-        var_dump($route);
+        $url = $router->generate($this->routeName, $this->routeParameters, $router::ABSOLUTE_URL);
 
         $opts = array(
             'http' => array(
@@ -118,17 +148,14 @@ class OpCacheResetCommand extends AbstractCommand
             )
         );
 
-        var_dump($opts);
-        die;
+        $content = file_get_contents($url, false, stream_context_create($opts));
 
-        return 'wget --post-data '. escapeshellarg($route);
-    }
-
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        return 'opcachereset';
+        if(
+            !($result = @json_decode($content, true)) ||
+            !isset($result['opcacheresetsuccess']) ||
+            ! $result['opcacheresetsuccess']
+        ){
+            throw new \RuntimeException("OpCache-Reset WebServer Result not valid json - maybe route is protected over security.yml? -> Check ". $url);
+        }
     }
 }

@@ -65,7 +65,7 @@ class EnvironmentManager implements EnvironmentManagerInterface
 
 
         if(!$commands = $this->getServerEnvironmentCommands($server, $environment)){
-            $output->writeln('IbrowsDeployBundle: <info>No commands for server '. $server .'  and environment '. $environment .'</info>');
+            $output->writeln('IbrowsDeployBundle: <info>No commands for server '. $server .'  and environment '. $environment .'</info>composer');
             return;
         }
 

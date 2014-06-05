@@ -80,6 +80,7 @@ deploy_environment: ~
 ```
 
 composer.json
+
 ```json
 "require" : {
     "ibrows/deploy-bundle": "dev-master@dev"

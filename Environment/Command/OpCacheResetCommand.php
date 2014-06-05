@@ -148,7 +148,7 @@ class OpCacheResetCommand implements CommandInterface
             )
         );
 
-        $content = file_get_contents($url, false, stream_context_create($opts));
+        $content = @file_get_contents($url, false, stream_context_create($opts));
 
         if(
             !($result = @json_decode($content, true)) ||

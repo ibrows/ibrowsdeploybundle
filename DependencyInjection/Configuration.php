@@ -18,21 +18,17 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('environment')->isRequired()->cannotBeEmpty()->end()
                 ->scalarNode('server')->isRequired()->cannotBeEmpty()->end()
-                ->arrayNode('tags')->useAttributeAsKey('name')
+                ->scalarNode('environment')->isRequired()->cannotBeEmpty()->end()
+
+                ->arrayNode('server_environments')
                     ->prototype('array')
-                        ->children()
-                            ->arrayNode('servers')
-                                ->prototype('scalar')->end()
-                            ->end()
-                            ->arrayNode('environments')
-                                ->prototype('scalar')->end()
-                            ->end()
-                        ->end()
-                    ->end()
-                ->end()
-            ->end()
+                        ->prototype('array')
+                            ->prototype('array')
+                                ->children()
+                                    ->integerNode('priority')->isRequired()->end()
+                                    ->arrayNode('args')
+                                        ->prototype('variable')
         ;
 
         return $treeBuilder;

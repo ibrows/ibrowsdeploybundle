@@ -1,0 +1,134 @@
+<?php
+
+namespace Ibrows\DeployBundle\Environment\Command;
+
+use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\RouterInterface;
+
+class OpCacheResetCommand extends AbstractCommand
+{
+    /**
+     * @var RouterInterface
+     */
+    protected $router;
+
+    /**
+     * @var string
+     */
+    protected $secret;
+
+    /**
+     * @var string
+     */
+    protected $host;
+
+    /**
+     * @var int
+     */
+    protected $port = 80;
+
+    /**
+     * @var string
+     */
+    protected $baseUrl;
+
+    /**
+     * @var string
+     */
+    protected $method = 'POST';
+
+    /**
+     * @var string
+     */
+    protected $routeName = 'ibrows_deploy_opcache_reset';
+
+    /**
+     * @var array
+     */
+    protected $routeParameters = array();
+
+    /**
+     * @param RouterInterface $router
+     * @param string $secret
+     * @param string $host
+     * @param int $port
+     * @param string $baseUrl
+     * @param string $method
+     * @param string $routeName
+     * @param array $routeParameters
+     * @param int $timeout
+     */
+    public function __construct(RouterInterface $router, $secret, $host = null, $port = 80, $baseUrl = null, $method = 'POST', $routeName = 'ibrows_deploy_opcache_reset', array $routeParameters = array(), $timeout = 300)
+    {
+        $this->router = $router;
+        $this->secret = $secret;
+        $this->host = $host;
+        $this->port = $port;
+        $this->baseUrl = $baseUrl;
+        $this->method = $method;
+        $this->routeName = $routeName;
+        $this->routeParameters = $routeParameters;
+        parent::__construct($timeout);
+    }
+
+    /**
+     * @param array $args
+     * @return array
+     */
+    protected function getArguments(array $args = array())
+    {
+        return array_merge(parent::getArguments(), array(
+            'host' => $this->host,
+            'port' => $this->port,
+            'baseUrl' => $this->baseUrl,
+            'method' => $this->method,
+            'routeName' => $this->routeName,
+            'routeParameters' => $this->routeParameters,
+        ), $args);
+    }
+
+    /**
+     * @param array $args
+     * @throws \RuntimeException
+     * @return string
+     */
+    protected function getCommand(array $args)
+    {
+        $context = new RequestContext();
+
+        if(!$args['host']){
+            throw new \RuntimeException("Need host");
+        }
+
+        $context->setHost($args['host']);
+        $context->setHttpPort($args['port']);
+        $context->setBaseUrl($args['baseUrl']);
+
+        $router = $this->router;
+        $router->setContext($context);
+
+        $route = $router->generate($this->routeName, $this->routeParameters, $router::ABSOLUTE_URL);
+        var_dump($route);
+
+        $opts = array(
+            'http' => array(
+                'method' => $args['method'],
+                'timeout' => $args['timeout'],
+                'header' => "OpCacheSecret: ". $this->secret ."\r\n"
+            )
+        );
+
+        var_dump($opts);
+        die;
+
+        return 'wget --post-data '. escapeshellarg($route);
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'opcachereset';
+    }
+}

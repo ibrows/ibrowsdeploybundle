@@ -3,31 +3,107 @@
 <container xmlns="http://symfony.com/schema/dic/services"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+        <!-- Defaults -->
+        <parameter key="ibrows_deploy.environment.command.default.kernel.root_dir">%kernel.root_dir%</parameter>
+        <parameter key="ibrows_deploy.environment.command.default.console">%ibrows_deploy.environment.command.default.kernel.root_dir%/console</parameter>
+        <parameter key="ibrows_deploy.environment.command.default.timeout">300</parameter>
+        <parameter key="ibrows_deploy.environment.command.default.phpExecutablePath" />
+
+        <!-- assetic:dump -->
+        <parameter key="ibrows_deploy.environment.command.asseticdump.console">%ibrows_deploy.environment.command.default.console%</parameter>
+        <parameter key="ibrows_deploy.environment.command.asseticdump.writeTo">web</parameter>
+        <parameter key="ibrows_deploy.environment.command.asseticdump.force">true</parameter>
+        <parameter key="ibrows_deploy.environment.command.asseticdump.timeout">%ibrows_deploy.environment.command.default.timeout%</parameter>
+        <parameter key="ibrows_deploy.environment.command.asseticdump.phpExecutablePath">%ibrows_deploy.environment.command.default.phpExecutablePath%</parameter>
+
+        <!-- cache:clear -->
+        <parameter key="ibrows_deploy.environment.command.cacheclear.console">%ibrows_deploy.environment.command.default.console%</parameter>
+        <parameter key="ibrows_deploy.environment.command.cacheclear.timeout">%ibrows_deploy.environment.command.default.timeout%</parameter>
+        <parameter key="ibrows_deploy.environment.command.cacheclear.phpExecutablePath">%ibrows_deploy.environment.command.default.phpExecutablePath%</parameter>
+
+        <!-- assets:install -->
+        <parameter key="ibrows_deploy.environment.command.assetsinstall.console">%ibrows_deploy.environment.command.default.console%</parameter>
+        <parameter key="ibrows_deploy.environment.command.assetsinstall.webDir">web</parameter>
+        <parameter key="ibrows_deploy.environment.command.assetsinstall.timeout">%ibrows_deploy.environment.command.default.timeout%</parameter>
+        <parameter key="ibrows_deploy.environment.command.assetsinstall.phpExecutablePath">%ibrows_deploy.environment.command.default.phpExecutablePath%</parameter>
+
+        <!-- mysqldump -->
+        <parameter key="ibrows_deploy.environment.command.mysqldump.path">%kernel.root_dir%/cache</parameter>
+        <parameter key="ibrows_deploy.environment.command.mysqldump.gzip">true</parameter>
+        <parameter key="ibrows_deploy.environment.command.mysqldump.user">%database_user%</parameter>
+        <parameter key="ibrows_deploy.environment.command.mysqldump.password">%database_password%</parameter>
+        <parameter key="ibrows_deploy.environment.command.mysqldump.name">%database_name%</parameter>
+        <parameter key="ibrows_deploy.environment.command.mysqldump.dateFormat">Y_m_d_H_i_s</parameter>
+        <parameter key="ibrows_deploy.environment.command.mysqldump.timeout">%ibrows_deploy.environment.command.default.timeout%</parameter>
+
+        <!-- opcachereset -->
+        <parameter key="ibrows_deploy.environment.command.opcachereset.secret">%secret%</parameter>
+        <parameter key="ibrows_deploy.environment.command.opcachereset.host" />
+        <parameter key="ibrows_deploy.environment.command.opcachereset.port">80</parameter>
+        <parameter key="ibrows_deploy.environment.command.opcachereset.baseUrl" />
+        <parameter key="ibrows_deploy.environment.command.opcachereset.method">POST</parameter>
+        <parameter key="ibrows_deploy.environment.command.opcachereset.routeName">ibrows_deploy_opcache_reset</parameter>
+        <parameter key="ibrows_deploy.environment.command.opcachereset.routeParameters" type="collection" />
+        <parameter key="ibrows_deploy.environment.command.opcachereset.timeout">%ibrows_deploy.environment.command.default.timeout%</parameter>
+    </parameters>
+
     <services>
         <!-- EnvironmentManager -->
         <service id="ibrows_deploy.environment.manager" class="Ibrows\DeployBundle\Environment\EnvironmentManager">
             <argument>%ibrows_deploy.server%</argument>
             <argument>%ibrows_deploy.environment%</argument>
+            <argument>%ibrows_deploy.server_environments%</argument>
         </service>
 
         <!-- SymfonyCommands -->
-        <service id="ibrows_deploy.environment.command.assetic" class="Ibrows\DeployBundle\Environment\Command\AsseticDumpCommand">
-            <argument>%kernel.root_dir%</argument>
-            <tag name="ibrows_deploy.command" priority="200" />
+        <service id="ibrows_deploy.environment.command.asseticdump" class="Ibrows\DeployBundle\Environment\Command\AsseticDumpCommand">
+            <argument>%ibrows_deploy.environment.command.asseticdump.console%</argument>
+            <argument>%ibrows_deploy.environment.command.asseticdump.writeTo%</argument>
+            <argument>%ibrows_deploy.environment.command.asseticdump.force%</argument>
+            <argument>%ibrows_deploy.environment.command.asseticdump.timeout%</argument>
+            <argument>%ibrows_deploy.environment.command.asseticdump.phpExecutablePath%</argument>
+            <tag name="ibrows_deploy.command" />
         </service>
 
         <service id="ibrows_deploy.environment.command.cacheclear" class="Ibrows\DeployBundle\Environment\Command\CacheClearCommand">
-            <argument>%kernel.root_dir%</argument>
-            <tag name="ibrows_deploy.command" priority="150" />
+            <argument>%ibrows_deploy.environment.command.cacheclear.console%</argument>
+            <argument>%ibrows_deploy.environment.command.cacheclear.timeout%</argument>
+            <argument>%ibrows_deploy.environment.command.cacheclear.phpExecutablePath%</argument>
+            <tag name="ibrows_deploy.command" />
+        </service>
+
+        <service id="ibrows_deploy.environment.command.assetsinstall" class="Ibrows\DeployBundle\Environment\Command\AssetsInstallCommand">
+            <argument>%ibrows_deploy.environment.command.assetsinstall.console%</argument>
+            <argument>%ibrows_deploy.environment.command.assetsinstall.webDir%</argument>
+            <argument>%ibrows_deploy.environment.command.assetsinstall.timeout%</argument>
+            <argument>%ibrows_deploy.environment.command.assetsinstall.phpExecutablePath%</argument>
+            <tag name="ibrows_deploy.command" />
         </service>
 
         <!-- ShellCommands -->
-        <service id="ibrows_deploy.environment.command.databasedump" class="Ibrows\DeployBundle\Environment\Command\DatabaseDumpCommand">
-            <argument>/Users/mikemeier/Documents/webpages/apollonia/dump.sql</argument>
-            <argument>%database_name%</argument>
-            <argument>%database_user%</argument>
-            <argument>%database_password%</argument>
-            <tag name="ibrows_deploy.command" priority="100" />
+        <service id="ibrows_deploy.environment.command.mysqldump" class="Ibrows\DeployBundle\Environment\Command\MysqlDumpCommand">
+            <argument>%ibrows_deploy.environment.command.mysqldump.path%</argument>
+            <argument>%ibrows_deploy.environment.command.mysqldump.gzip%</argument>
+            <argument>%ibrows_deploy.environment.command.mysqldump.user%</argument>
+            <argument>%ibrows_deploy.environment.command.mysqldump.password%</argument>
+            <argument>%ibrows_deploy.environment.command.mysqldump.name%</argument>
+            <argument>%ibrows_deploy.environment.command.mysqldump.dateFormat%</argument>
+            <argument>%ibrows_deploy.environment.command.mysqldump.timeout%</argument>
+            <tag name="ibrows_deploy.command" />
+        </service>
+
+        <service id="ibrows_deploy.environment.command.opcachereset" class="Ibrows\DeployBundle\Environment\Command\OpCacheResetCommand">
+            <argument type="service" id="router" />
+            <argument>%ibrows_deploy.environment.command.opcachereset.secret%</argument>
+            <argument>%ibrows_deploy.environment.command.opcachereset.host%</argument>
+            <argument>%ibrows_deploy.environment.command.opcachereset.port%</argument>
+            <argument>%ibrows_deploy.environment.command.opcachereset.baseUrl%</argument>
+            <argument>%ibrows_deploy.environment.command.opcachereset.method%</argument>
+            <argument>%ibrows_deploy.environment.command.opcachereset.routeName%</argument>
+            <argument>%ibrows_deploy.environment.command.opcachereset.routeParameters%</argument>
+            <argument>%ibrows_deploy.environment.command.opcachereset.timeout%</argument>
+            <tag name="ibrows_deploy.command" />
         </service>
     </services>
 </container>

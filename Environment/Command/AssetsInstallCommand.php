@@ -4,29 +4,22 @@ namespace Ibrows\DeployBundle\Environment\Command;
 
 use Symfony\Component\Console\Output\OutputInterface;
 
-class AsseticDumpCommand extends AbstractSymfonyCommand
+class AssetsInstallCommand extends AbstractSymfonyCommand
 {
     /**
      * @var string
      */
-    protected $writeTo = 'web';
-
-    /**
-     * @var bool
-     */
-    protected $force = false;
+    protected $webDir = 'web';
 
     /**
      * @param string $kernelRootDir
-     * @param string $writeTo
-     * @param bool $force
+     * @param string $webDir
      * @param int $timeout
      * @param string $phpExecutablePath
      */
-    public function __construct($kernelRootDir, $writeTo = 'web', $force = false, $timeout = null, $phpExecutablePath = null)
+    public function __construct($kernelRootDir, $webDir = 'web', $timeout = null, $phpExecutablePath = null)
     {
-        $this->writeTo = $writeTo;
-        $this->force = $force;
+        $this->webDir = $webDir;
         parent::__construct($kernelRootDir, $timeout, $phpExecutablePath);
     }
 
@@ -37,8 +30,7 @@ class AsseticDumpCommand extends AbstractSymfonyCommand
     protected function getArguments(array $args = array())
     {
         return array_merge(parent::getArguments(), array(
-            'writeTo' => $this->writeTo,
-            'force' => $this->force
+            'webDir' => $this->webDir,
         ), $args);
     }
 
@@ -48,14 +40,10 @@ class AsseticDumpCommand extends AbstractSymfonyCommand
      */
     public function getCommand(array $args)
     {
-        $cmd = 'assetic:dump';
+        $cmd = 'assets:install';
 
-        if($writeTo = $this->writeTo){
-            $cmd .= ' '. escapeshellarg($writeTo);
-        }
-
-        if($this->force){
-            $cmd .= ' --force';
+        if($args['webDir']){
+            $cmd .= ' '. escapeshellarg($args['webDir']);
         }
 
         return $cmd;
@@ -66,6 +54,6 @@ class AsseticDumpCommand extends AbstractSymfonyCommand
      */
     public function getName()
     {
-        return 'asseticdump';
+        return 'assetsinstall';
     }
 }

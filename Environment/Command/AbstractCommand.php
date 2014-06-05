@@ -12,61 +12,47 @@ abstract class AbstractCommand implements CommandInterface
     /**
      * @var int
      */
-    protected $timeout;
-
-    /**
-     * @var string
-     */
-    protected $phpExecutablePath;
-
-    /**
-     * @var array
-     */
-    protected $servers = array();
-
-    /**
-     * @var array
-     */
-    protected $environments = array();
+    protected $timeout = 300;
 
     /**
      * @param int $timeout
-     * @param string $phpExecutablePath
      */
-    public function __construct($timeout = null, $phpExecutablePath = null)
+    public function __construct($timeout = 300)
     {
         $this->timeout = $timeout;
-        $this->phpExecutablePath = $phpExecutablePath;
     }
 
     /**
+     * @param array $args
+     * @return array
+     */
+    protected function getArguments(array $args = array())
+    {
+        return array_merge(array(
+            'timeout' => $this->timeout
+        ), $args);
+    }
+
+    /**
+     * @param array $args
      * @param OutputInterface $output
      * @return int|null
-     * @throws \RuntimeException
      */
-    public function run(OutputInterface $output)
+    public function run(array $args, OutputInterface $output)
     {
-        return $this->execute($this->getCommand(), $output);
+        return $this->execute($this->getCommand($this->getArguments($args)));
     }
-
-    /**
-     * @return string
-     */
-    abstract protected function getCommand();
 
     /**
      * @param string $cmd
-     * @param OutputInterface $output
-     * @return int|null
+     * @param callable $callback
      * @throws \RuntimeException
+     * @return int|null
      */
-    protected function execute($cmd, OutputInterface $output)
+    protected function execute($cmd, $callback = null)
     {
-        $process = new Process($cmd, null, null, null, $this->getTimeout());
-
-        $process->run(function($type, $buffer)use($output){
-            $output->writeln($buffer);
-        });
+        $process = new Process($cmd, null, null, null, $this->timeout);
+        $process->run($callback);
 
         if(!$process->isSuccessful()){
             throw new \RuntimeException(sprintf('An error occurred when executing the "%s" command.', $cmd));
@@ -76,36 +62,8 @@ abstract class AbstractCommand implements CommandInterface
     }
 
     /**
-     * @param string $server
+     * @param array $args
+     * @return string
      */
-    public function addServer($server)
-    {
-        $this->servers[] = $server;
-    }
-
-    /**
-     * @param string $environment
-     */
-    public function addEnvironment($environment)
-    {
-        $this->environments[] = $environment;
-    }
-
-    /**
-     * @param string $server
-     * @param string $environment
-     * @return bool
-     */
-    public function accept($server, $environment)
-    {
-        return in_array($server, $this->servers) && in_array($environment, $this->environments);
-    }
-
-    /**
-     * @return int
-     */
-    protected function getTimeout()
-    {
-        return $this->timeout ?: 300;
-    }
+    abstract protected function getCommand(array $args);
 }

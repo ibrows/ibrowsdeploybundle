@@ -7,15 +7,19 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CacheClearCommand extends AbstractSymfonyCommand
 {
     /**
-     * @var array
+     * @param array $args
+     * @return string
      */
-    protected $symfonyRunEnvironments = array('dev', 'prod');
+    public function getCommand(array $args)
+    {
+        return 'cache:clear';
+    }
 
     /**
      * @return string
      */
-    public function getCommand()
+    public function getName()
     {
-        return 'cache:clear';
+        return 'cacheclear';
     }
 }

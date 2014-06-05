@@ -8,17 +8,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 interface CommandInterface
 {
     /**
+     * @param array $args
      * @param OutputInterface $output
      * @return void
      */
-    public function run(OutputInterface $output);
-
-    /**
-     * @param string $server
-     * @param string $environment
-     * @return bool
-     */
-    public function accept($server, $environment);
+    public function run(array $args, OutputInterface $output);
 
     /**
      * @return string

@@ -10,56 +10,56 @@ abstract class AbstractSymfonyCommand extends AbstractCommand
     /**
      * @var string
      */
-    protected $kernelRootDir;
+    protected $console;
 
     /**
-     * @var array
+     * @var string
      */
-    protected $symfonyRunEnvironments = array('prod');
+    protected $phpExecutable;
 
     /**
-     * @param string $kernelRootDir
-     * @param array $symfonyRunEnvironments
+     * @param string $console
      * @param int $timeout
-     * @param string $phpExecutablePath
+     * @param null $phpExecutable
      */
-    public function __construct($kernelRootDir, array $symfonyRunEnvironments = null, $timeout = null, $phpExecutablePath = null)
+    public function __construct($console, $timeout = 300, $phpExecutable = null)
     {
-        $this->kernelRootDir = $kernelRootDir;
-
-        if($symfonyRunEnvironments){
-            $this->symfonyRunEnvironments = $symfonyRunEnvironments;
-        }
-
-        parent::__construct($timeout, $phpExecutablePath);
+        $this->console = $console;
+        $this->phpExecutable = $phpExecutable;
+        parent::__construct($timeout);
     }
 
     /**
-     * @return string
+     * @param array $args
+     * @return array
      */
-    public function getName()
+    protected function getArguments(array $args = array())
     {
-        return $this->getCommand();
+        return array_merge(parent::getArguments(), array(
+            'console' => $this->console,
+            'phpExecutable' => $this->phpExecutable ?: $this->getPhpExecutablePath()
+        ), $args);
     }
 
     /**
+     * @param array $args
      * @param OutputInterface $output
-     * @throws \RuntimeException
-     * @return int
+     * @return int|null
      */
-    public function run(OutputInterface $output)
+    public function run(array $args, OutputInterface $output)
     {
-        $php = escapeshellarg($this->getPhpExecutablePath());
+        $args = $this->getArguments($args);
 
-        $return = 0;
-        foreach($this->symfonyRunEnvironments as $env){
-            $console = escapeshellarg($this->kernelRootDir.'/console');
-            $cmd = $php .' '. $console .' '. $this->getCommand().' --env='. $env;
-            if($code = $this->execute($cmd, $output)){
-                $return = $code;
-            }
+        $php = escapeshellarg($args['phpExecutable']);
+        $console = escapeshellarg($args['console']);
+
+        $cmd = $php .' '. $console .' '. $this->getCommand($args);
+
+        if(isset($args['symfonyEnv'])){
+            $cmd .= ' --env='. $args['symfonyEnv'];
         }
-        return $return;
+
+        return $this->execute($cmd);
     }
 
     /**
@@ -68,15 +68,10 @@ abstract class AbstractSymfonyCommand extends AbstractCommand
      */
     protected function getPhpExecutablePath()
     {
-        if($this->phpExecutablePath){
-            return $this->phpExecutablePath;
-        }
-
         $phpFinder = new PhpExecutableFinder();
         if(!$phpPath = $phpFinder->find()){
-            throw new \RuntimeException('The php executable could not be found, add it to your PATH environment variable and try again');
+            throw new \RuntimeException('The php executable could not be found, add it to your PATH environment variable or define over arguments and try again');
         }
-
         return $phpPath;
     }
 }

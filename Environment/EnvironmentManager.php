@@ -4,6 +4,7 @@ namespace Ibrows\DeployBundle\Environment;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Ibrows\DeployBundle\Environment\Command\CommandInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class EnvironmentManager implements EnvironmentManagerInterface
 {
@@ -18,93 +19,98 @@ class EnvironmentManager implements EnvironmentManagerInterface
     protected $environment;
 
     /**
-     * @var CommandInterface[]|ArrayCollection
+     * @var array
+     */
+    protected $server_environments;
+
+    /**
+     * @var array
      */
     protected $commands;
 
     /**
      * @param string $server
      * @param string $environment
+     * @param array $server_environments
      */
-    public function __construct($server, $environment)
+    public function __construct($server, $environment, array $server_environments)
     {
         $this->server = $server;
         $this->environment = $environment;
-        $this->commands = new ArrayCollection();
-    }
-
-    /**
-     * @return string
-     */
-    public function getServer()
-    {
-        return $this->server;
-    }
-
-    /**
-     * @return string
-     */
-    public function getEnvironment()
-    {
-        return $this->environment;
+        $this->server_environments = $server_environments;
     }
 
     /**
      * @param CommandInterface $command
+     * @throws \RuntimeException
      */
     public function addCommand(CommandInterface $command)
     {
-        $this->commands->add($command);
+        $name = $command->getName();
+        if(isset($this->commands[$name])){
+            throw new \RuntimeException("Command with name ". $name ." already exists");
+        }
+        $this->commands[$command->getName()] = $command;
     }
 
     /**
-     * @param CommandInterface $command
-     */
-    public function removeCommand(CommandInterface $command)
-    {
-        $this->commands->removeElement($command);
-    }
-
-    /**
-     * @param CommandInterface $command
-     * @return bool
-     */
-    public function hasCommand(CommandInterface $command)
-    {
-        return $this->commands->contains($command);
-    }
-
-    /**
-     * @param string $environment
-     */
-    public function setEnvironment($environment)
-    {
-        $this->environment = $environment;
-    }
-
-    /**
-     * @param string $server
-     */
-    public function setServer($server)
-    {
-        $this->server = $server;
-    }
-
-    /**
+     * @param OutputInterface $output
      * @param string $server
      * @param string $environment
-     * @return CommandInterface[]
      */
-    public function getCommands($server = null, $environment = null)
+    public function runCommands(OutputInterface $output, $server = null, $environment = null)
     {
         $server = $server ?: $this->server;
         $environment = $environment ?: $this->environment;
-        $commands = array();
-        foreach($this->commands as $command){
-            if($command->accept($server, $environment)){
-                $commands[] = $command;
+
+
+        if(!$commands = $this->getServerEnvironmentCommands($server, $environment)){
+            $output->writeln('No commands for server '. $server .'  and environment '. $environment);
+            return;
+        }
+
+        foreach($commands as $options){
+            /** @var CommandInterface $command */
+            $command = $options['command'];
+            $output->writeln('Execute <info>'. $command->getName() .'</info> <comment>'. ($options['args'] ? json_encode($options['args']) : null).'</comment>');
+            $command->run($options['args'], $output);
+        }
+    }
+
+    /**
+     * @param $server
+     * @param $environment
+     * @throws \RuntimeException
+     * @return array
+     */
+    protected function getServerEnvironmentCommands($server, $environment)
+    {
+        $compositeKey = $server.'_'.$environment;
+        if(!isset($this->server_environments[$compositeKey])){
+            return array();
+        }
+
+        $commands = $this->server_environments[$compositeKey];
+
+        $chain = array();
+
+        foreach($commands as $commandName => $options){
+            if(!isset($this->commands[$commandName])){
+                throw new \RuntimeException("Command ". $commandName ." not available");
+            }
+            foreach($options as $option){
+                $chain[] = array(
+                    'command' => $this->commands[$commandName],
+                    'priority' => $option['priority'],
+                    'args' => isset($option['args']) && is_array($option['args']) ? $option['args'] : array()
+                );
             }
         }
-        return $commands;
+
+        usort($chain, function($a, $b){
+            return $a['priority'] > $b['priority'];
+        });
+
+        return $chain;
     }
 }

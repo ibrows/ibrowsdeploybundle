@@ -4,6 +4,7 @@ namespace Ibrows\DeployBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Ibrows\DeployBundle\Environment\EnvironmentManagerInterface;
 use Symfony\Component\Process\Process;
@@ -14,8 +15,8 @@ class RunCommand extends ContainerAwareCommand
     {
         $this
             ->setName('ibrows:deploy:run')
-            ->addOption('server')
-            ->addOption('environment')
+            ->addOption('server', null, InputOption::VALUE_REQUIRED)
+            ->addOption('environment', null, InputOption::VALUE_REQUIRED)
             ->setDescription('Runs the commands for given server and environment')
         ;
     }
@@ -27,12 +28,7 @@ class RunCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $environmentManager = $this->getEnvironmentManager();
-        $application = $this->getApplication();
-        foreach($environmentManager->getCommands($input->getOption('server'), $input->getOption('environment')) as $command){
-            $output->writeln('<comment>'. date('H:i:s') .' [IbrowsDeployBundle]</comment> <info>'. $command->getName() .'</info>');
-            $command->run($output);
-        }
+        $this->getEnvironmentManager()->runCommands($output, $input->getOption('server'), $input->getOption('environment'));
     }
 
     /**

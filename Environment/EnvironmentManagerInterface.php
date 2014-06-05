@@ -3,49 +3,19 @@
 namespace Ibrows\DeployBundle\Environment;
 
 use Ibrows\DeployBundle\Environment\Command\CommandInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 interface EnvironmentManagerInterface
 {
-    /**
-     * @return string
-     */
-    public function getEnvironment();
-
-    /**
-     * @param string $environment
-     */
-    public function setEnvironment($environment);
-
-    /**
-     * @return string
-     */
-    public function getServer();
-
-    /**
-     * @param string $server
-     */
-    public function setServer($server);
-
     /**
      * @param CommandInterface $command
      */
     public function addCommand(CommandInterface $command);
 
     /**
-     * @param CommandInterface $command
-     */
-    public function removeCommand(CommandInterface $command);
-
-    /**
-     * @param CommandInterface $command
-     * @return bool
-     */
-    public function hasCommand(CommandInterface $command);
-
-    /**
+     * @param OutputInterface $output
      * @param string $server
      * @param string $environment
-     * @return CommandInterface[]
      */
-    public function getCommands($server = null, $environment = null);
+    public function runCommands(OutputInterface $output, $server = null, $environment = null);
 }

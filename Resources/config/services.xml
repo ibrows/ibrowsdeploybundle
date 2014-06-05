@@ -46,6 +46,11 @@
         <parameter key="ibrows_deploy.environment.command.opcachereset.routeName">ibrows_deploy_opcache_reset</parameter>
         <parameter key="ibrows_deploy.environment.command.opcachereset.routeParameters" type="collection" />
         <parameter key="ibrows_deploy.environment.command.opcachereset.timeout">%ibrows_deploy.environment.command.default.timeout%</parameter>
+
+        <!-- doctrineschemaupdate -->
+        <parameter key="ibrows_deploy.environment.command.doctrineschemaupdate.console">%ibrows_deploy.environment.command.default.console%</parameter>
+        <parameter key="ibrows_deploy.environment.command.doctrineschemaupdate.timeout">%ibrows_deploy.environment.command.default.timeout%</parameter>
+        <parameter key="ibrows_deploy.environment.command.doctrineschemaupdate.phpExecutablePath">%ibrows_deploy.environment.command.default.phpExecutablePath%</parameter>
     </parameters>
 
     <services>
@@ -78,6 +83,13 @@
             <argument>%ibrows_deploy.environment.command.assetsinstall.webDir%</argument>
             <argument>%ibrows_deploy.environment.command.assetsinstall.timeout%</argument>
             <argument>%ibrows_deploy.environment.command.assetsinstall.phpExecutablePath%</argument>
+            <tag name="ibrows_deploy.command" />
+        </service>
+
+        <service id="ibrows_deploy.environment.command.doctrineschemaupdate" class="Ibrows\DeployBundle\Environment\Command\DoctrineSchemaUpdateCommand">
+            <argument>%ibrows_deploy.environment.command.doctrineschemaupdate.console%</argument>
+            <argument>%ibrows_deploy.environment.command.doctrineschemaupdate.timeout%</argument>
+            <argument>%ibrows_deploy.environment.command.doctrineschemaupdate.phpExecutablePath%</argument>
             <tag name="ibrows_deploy.command" />
         </service>
 

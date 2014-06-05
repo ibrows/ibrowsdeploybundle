@@ -3,6 +3,7 @@
 namespace Ibrows\DeployBundle\Environment\Command;
 
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 class MysqlDumpCommand extends AbstractCommand
 {
@@ -79,15 +80,41 @@ class MysqlDumpCommand extends AbstractCommand
      */
     public function getCommand(array $args)
     {
-        @mkdir($args['path'], 0777, true);
-
-        if(!is_writable($args['path'])){
-            throw new \RuntimeException("Invalid backup path ". $args['path']);
+        if(!$path = $this->getRealPathAndCreate($args['path'])){
+            throw new \RuntimeException("Couldn create directory ". $args['path']);
         }
 
-        $path = $args['path'] .'/'. $this->getRunServer() .'_'. $this->getRunEnvironment() .'_'. date($args['dateFormat']).'.sql';
+        $file = $path .'/'. $this->getRunServer() .'_'. $this->getRunEnvironment() .'_'. date($args['dateFormat']).'.sql'.($args['gzip'] ? '.gz' : null);
 
-        return 'mysqldump -u '. escapeshellarg($args['user']) .' -p'. escapeshellarg($args['password']) .' '. escapeshellarg($args['name']) .''.($args['gzip'] ? ' | gzip' : null).' > '. escapeshellarg($path) . ($args['gzip'] ? '.gz' : null);
+        $mkdirCommand = 'mkdir -p '. escapeshellarg($args['path']);
+        $dumpCommand = 'mysqldump -u '. escapeshellarg($args['user']) .' -p'. escapeshellarg($args['password']) .' '. escapeshellarg($args['name']) .''.($args['gzip'] ? ' | gzip' : null).' > '. escapeshellarg($file);
+
+        return $mkdirCommand.' && '. $dumpCommand;
+    }
+
+    /**
+     * @param string $path
+     * @return string
+     */
+    protected function getRealPathAndCreate($path)
+    {
+        if($path[0] == '~'){
+            $path = $this->getHomeDirectory() . substr($path, 1);
+        }
+
+        if(!is_dir($path)){
+            @mkdir($path, 0777, true);
+        }
+
+        return realpath($path);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getHomeDirectory()
+    {
+        return trim(shell_exec('cd ~ && pwd'));
     }
 
     /**

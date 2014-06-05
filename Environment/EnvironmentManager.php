@@ -73,6 +73,10 @@ class EnvironmentManager implements EnvironmentManagerInterface
             /** @var CommandInterface $command */
             $command = $options['command'];
             $output->writeln('Execute <info>'. $command->getName() .'</info> <comment>'. ($options['args'] ? json_encode($options['args']) : null).'</comment>');
+
+            $command->setRunServer($server);
+            $command->setRunEnvironment($environment);
+
             $command->run($options['args'], $output);
         }
     }

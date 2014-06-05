@@ -6,7 +6,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\RouterInterface;
 
-class OpCacheResetCommand implements CommandInterface
+class OpCacheResetCommand extends AbstractCommand
 {
     /**
      * @var RouterInterface
@@ -49,11 +49,6 @@ class OpCacheResetCommand implements CommandInterface
     protected $routeParameters = array();
 
     /**
-     * @var int
-     */
-    protected $timeout = 300;
-
-    /**
      * @var string
      */
     const JSON_RESPONSE_KEY = 'opcacheresetsuccess';
@@ -79,7 +74,7 @@ class OpCacheResetCommand implements CommandInterface
         $this->method = $method;
         $this->routeName = $routeName;
         $this->routeParameters = $routeParameters;
-        $this->timeout = $timeout;
+        parent::__construct($timeout);
     }
 
     /**
@@ -157,5 +152,15 @@ class OpCacheResetCommand implements CommandInterface
         ){
             throw new \RuntimeException("OpCache-Reset WebServer Result not valid json - maybe route is protected over security.yml? -> Check ". $url);
         }
+    }
+
+    /**
+     * @param array $args
+     * @throws \RuntimeException
+     * @return string
+     */
+    protected function getCommand(array $args)
+    {
+        throw new \RuntimeException("getCommand cannot be used in this command");
     }
 }

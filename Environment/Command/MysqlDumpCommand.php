@@ -79,13 +79,15 @@ class MysqlDumpCommand extends AbstractCommand
      */
     public function getCommand(array $args)
     {
+        @mkdir($args['path'], 0777, true);
+
         if(!is_writable($args['path'])){
             throw new \RuntimeException("Invalid backup path ". $args['path']);
         }
 
-        $path = $args['path'] .'/'. date($args['dateFormat']).'.sql';
+        $path = $args['path'] .'/'. $this->getRunServer() .'_'. $this->getRunEnvironment() .'_'. date($args['dateFormat']).'.sql';
 
-        return 'mysqldump -u '. escapeshellarg($args['user']) .' -p'. escapeshellarg($args['password']) .' '. escapeshellarg($args['name']) .''.($args['gzip'] ? ' | gzip' : null).' > '. escapeshellarg($path);
+        return 'mysqldump -u '. escapeshellarg($args['user']) .' -p'. escapeshellarg($args['password']) .' '. escapeshellarg($args['name']) .''.($args['gzip'] ? ' | gzip' : null).' > '. escapeshellarg($path) . ($args['gzip'] ? '.gz' : null);
     }
 
     /**

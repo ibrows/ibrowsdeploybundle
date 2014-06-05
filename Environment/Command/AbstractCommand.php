@@ -15,11 +15,47 @@ abstract class AbstractCommand implements CommandInterface
     protected $timeout = 300;
 
     /**
+     * @var string
+     */
+    protected $runServer;
+
+    /**
+     * @var string
+     */
+    protected $runEnvironment;
+
+    /**
      * @param int $timeout
      */
     public function __construct($timeout = 300)
     {
         $this->timeout = $timeout;
+    }
+
+    /**
+     * @param string $server
+     */
+    public function setRunServer($server)
+    {
+        $this->runServer = $server;
+    }
+
+    /**
+     * @param string $environment
+     */
+    public function setRunEnvironment($environment)
+    {
+        $this->runEnvironment = $environment;
+    }
+
+    /**
+     * @param array $args
+     * @param OutputInterface $output
+     * @return int|null
+     */
+    public function run(array $args, OutputInterface $output)
+    {
+        return $this->execute($this->getCommand($this->getArguments($args)));
     }
 
     /**
@@ -34,16 +70,6 @@ abstract class AbstractCommand implements CommandInterface
     }
 
     /**
-     * @param array $args
-     * @param OutputInterface $output
-     * @return int|null
-     */
-    public function run(array $args, OutputInterface $output)
-    {
-        return $this->execute($this->getCommand($this->getArguments($args)));
-    }
-
-    /**
      * @param string $cmd
      * @param callable $callback
      * @throws \RuntimeException
@@ -51,7 +77,7 @@ abstract class AbstractCommand implements CommandInterface
      */
     protected function execute($cmd, $callback = null)
     {
-        $process = new Process($cmd, null, null, null, $this->timeout);
+        $process = new Process($cmd, null, null, null, $this->getTimeout());
         $process->run($callback);
 
         if(!$process->isSuccessful()){
@@ -59,6 +85,30 @@ abstract class AbstractCommand implements CommandInterface
         }
 
         return $process->getExitCode();
+    }
+
+    /**
+     * @return int
+     */
+    protected function getTimeout()
+    {
+        return $this->timeout;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getRunEnvironment()
+    {
+        return $this->runEnvironment;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getRunServer()
+    {
+        return $this->runServer;
     }
 
     /**

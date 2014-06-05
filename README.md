@@ -82,17 +82,17 @@ deploy_environment: ~
 composer.json
 
 ```json
-"require" : {
+"require": {
     "ibrows/deploy-bundle": "dev-master@dev"
 },
-"scripts" : {
-    "post-install-cmd" : [
+"scripts": {
+    "post-install-cmd": [
         "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
         "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
         "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
         "Ibrows\\DeployBundle\\Composer\\ScriptHandler::deploy"
     ],
-    "post-update-cmd" : [
+    "post-update-cmd": [
         "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
         "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
         "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",

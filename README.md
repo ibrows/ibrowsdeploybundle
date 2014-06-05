@@ -11,12 +11,12 @@ ibrows_deploy:
         localhost_dev:
             cacheclear:
                 - {priority: 1, args: { symfonyEnv: dev }}
-            doctrineschemaupdate:
-                - {priority: 2, args: { symfonyEnv: dev, force: true, complete: true, dumpSql: false }}
             assetsinstall:
-                - {priority: 3}
+                - {priority: 2}
             asseticdump:
-                - {priority: 4, args: { symfonyEnv: dev }}
+                - {priority: 3, args: { symfonyEnv: dev }}
+            doctrineschemaupdate:
+                - {priority: 4, args: { symfonyEnv: dev, force: true, complete: true, dumpSql: false }}
         atrila_dev:
             cacheclear:
                 - {priority: 1, args: { symfonyEnv: dev }}
@@ -27,14 +27,18 @@ ibrows_deploy:
                 - {priority: 4, args: { symfonyEnv: dev }}
                 - {priority: 5, args: { symfonyEnv: prod }}
         atrila_test:
+            mysqldump:
+                - {priority: 1, args: { path: ~/backup/database }}
             cacheclear:
-                - {priority: 1, args: { symfonyEnv: dev }}
-                - {priority: 2, args: { symfonyEnv: prod }}
+                - {priority: 2, args: { symfonyEnv: dev }}
+                - {priority: 3, args: { symfonyEnv: prod }}
             assetsinstall:
-                - {priority: 3}
+                - {priority: 4}
             asseticdump:
-                - {priority: 4, args: { symfonyEnv: dev }}
-                - {priority: 5, args: { symfonyEnv: prod }}
+                - {priority: 5, args: { symfonyEnv: dev }}
+                - {priority: 6, args: { symfonyEnv: prod }}
+            doctrineschemaupdate:
+                - {priority: 7, args: { symfonyEnv: dev, force: true, complete: true, dumpSql: false }}
         atrila_production:
             mysqldump:
                 - {priority: 1, args: { path: ~/backup/database }}

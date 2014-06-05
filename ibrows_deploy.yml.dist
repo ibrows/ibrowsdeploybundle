@@ -1,0 +1,44 @@
+ibrows_deploy:
+    server: %deploy_server%
+    environment: %deploy_environment%
+    server_environments:
+        localhost_dev:
+            cacheclear:
+                - {priority: 1, args: { symfonyEnv: dev }}
+            doctrineschemaupdate:
+                - {priority: 2, args: { symfonyEnv: dev, force: true, complete: true, dumpSql: false }}
+            assetsinstall:
+                - {priority: 3}
+            asseticdump:
+                - {priority: 4, args: { symfonyEnv: dev }}
+        atrila_dev:
+            cacheclear:
+                - {priority: 1, args: { symfonyEnv: dev }}
+                - {priority: 2, args: { symfonyEnv: prod }}
+            assetsinstall:
+                - {priority: 3}
+            asseticdump:
+                - {priority: 4, args: { symfonyEnv: dev }}
+                - {priority: 5, args: { symfonyEnv: prod }}
+        atrila_test:
+            cacheclear:
+                - {priority: 1, args: { symfonyEnv: dev }}
+                - {priority: 2, args: { symfonyEnv: prod }}
+            assetsinstall:
+                - {priority: 3}
+            asseticdump:
+                - {priority: 4, args: { symfonyEnv: dev }}
+                - {priority: 5, args: { symfonyEnv: prod }}
+        atrila_production:
+            mysqldump:
+                - {priority: 1, args: { path: ~/backup/database }}
+            opcachereset:
+                - {priority: 2, args: { host: 'integration.projectname.atri.ibrows.ch' }}
+            cacheclear:
+                - {priority: 3, args: { symfonyEnv: dev }}
+                - {priority: 4, args: { symfonyEnv: prod }}
+            assetsinstall:
+                - {priority: 5}
+            asseticdump:
+                - {priority: 6, args: { symfonyEnv: dev }}
+                - {priority: 7, args: { symfonyEnv: prod }}

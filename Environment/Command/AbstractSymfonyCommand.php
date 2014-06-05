@@ -59,7 +59,20 @@ abstract class AbstractSymfonyCommand extends AbstractCommand
             $cmd .= ' --env='. $args['symfonyEnv'];
         }
 
-        return $this->execute($cmd);
+
+
+        if(isset($args['symfonyVerbose'])){
+            $vcount = (int) $args['symfonyVerbose'];
+            if($vcount > 0){
+                $cmd .= ' -';
+                while($vcount >0){
+                    $cmd .= 'v';
+                    --$vcount;
+                }
+            }
+        }
+        $callback = $this->getCallback($args,$output);
+        return $this->execute($cmd, $callback);
     }
 
     /**

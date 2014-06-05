@@ -1,0 +1,5 @@
+# IbrowsDeployBundle (OpCache Reset)
+ibrows_deploy:
+    resource: "@IbrowsDeployBundle/Controller/"
+    type:     annotation
+    prefix:   /

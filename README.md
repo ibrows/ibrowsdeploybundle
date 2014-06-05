@@ -1,3 +1,9 @@
+IbrowsDeployBundle
+==================
+
+Configuration
+
+```yaml
 ibrows_deploy:
     server: %deploy_server%
     environment: %deploy_environment%
@@ -42,3 +48,22 @@ ibrows_deploy:
             asseticdump:
                 - {priority: 6, args: { symfonyEnv: dev }}
                 - {priority: 7, args: { symfonyEnv: prod }}
+```
+
+Routing (for OpCache Reset)
+
+```yaml
+# IbrowsDeployBundle (for OpCache Reset)
+ibrows_deploy:
+    resource: "@IbrowsDeployBundle/Controller/"
+    type:     annotation
+    prefix:   /
+```
+
+Security (for OpCache Reset)
+
+```yaml
+security:
+    access_control:
+        - { path: ^/ibrows/deploy/opcache/reset, role: IS_AUTHENTICATED_ANONYMOUSLY }
+```

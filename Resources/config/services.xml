@@ -54,7 +54,7 @@
 
         <!-- writebasicauthusersfile -->
         <parameter key="ibrows_deploy.environment.command.writebasicauthusersfile.users">%ibrows_deploy.basic_auth_users%</parameter>
-        <parameter key="ibrows_deploy.environment.command.writebasicauthusersfile.path">~/.htaccess</parameter>
+        <parameter key="ibrows_deploy.environment.command.writebasicauthusersfile.path">~/.htpasswd</parameter>
         <parameter key="ibrows_deploy.environment.command.writebasicauthusersfile.timeout">%ibrows_deploy.environment.command.default.timeout%</parameter>
     </parameters>
 

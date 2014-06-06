@@ -7,6 +7,9 @@ Configuration
 ibrows_deploy:
     server: %deploy_server%
     environment: %deploy_environment%
+    basic_auth_users:
+        - { user: ibrows, pass: 4EmbOAwVyiOSFFLI }
+        - { user: projectname, pass: projectpass }
     server_environments:
         localhost_dev:
             cacheclear:
@@ -54,6 +57,9 @@ ibrows_deploy:
             asseticdump:
                 - {priority: 6, args: { symfonyEnv: dev }}
                 - {priority: 7, args: { symfonyEnv: prod }}
+        atrila_*:
+            writebasicauthusersfile:
+                - {priority: 0}
 ```
 
 Routing (for OpCache Reset)
@@ -74,7 +80,7 @@ security:
         - { path: ^/ibrows/deploy/opcache/reset, role: IS_AUTHENTICATED_ANONYMOUSLY }
 ```
 
-Parameters (DO NOT SET DEFAULT VALUES HERE!) If you set default server to 'localhost' and environment to 'dev' it's verly likely that a production server will get those parameters as well and start to schema update with --force --complete as example
+Parameters (DO NOT SET DEFAULT VALUES HERE!) If you set default server to 'localhost' and environment to 'dev' it's verly likely that a production server will get those parameters as well and start to schema update with --force --complete for example
 
 ```yaml
 deploy_server: ~

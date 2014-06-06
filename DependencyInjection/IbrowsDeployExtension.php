@@ -20,6 +20,7 @@ class IbrowsDeployExtension extends Extension
 
         $container->setParameter('ibrows_deploy.server', $config['server']);
         $container->setParameter('ibrows_deploy.environment', $config['environment']);
+        $container->setParameter('ibrows_deploy.basic_auth_users', $config['basic_auth_users']);
         $container->setParameter('ibrows_deploy.server_environments', $config['server_environments']);
 
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));

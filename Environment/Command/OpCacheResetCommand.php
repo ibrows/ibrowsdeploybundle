@@ -31,6 +31,16 @@ class OpCacheResetCommand extends AbstractCommand
     /**
      * @var string
      */
+    protected $user;
+
+    /**
+     * @var string
+     */
+    protected $pass;
+
+    /**
+     * @var string
+     */
     protected $baseUrl;
 
     /**
@@ -58,18 +68,22 @@ class OpCacheResetCommand extends AbstractCommand
      * @param string $secret
      * @param string $host
      * @param int $port
+     * @param string $user
+     * @param string $pass
      * @param string $baseUrl
      * @param string $method
      * @param string $routeName
      * @param array $routeParameters
      * @param int $timeout
      */
-    public function __construct(RouterInterface $router, $secret, $host = null, $port = 80, $baseUrl = null, $method = 'POST', $routeName = 'ibrows_deploy_opcache_reset', array $routeParameters = array(), $timeout = 300)
+    public function __construct(RouterInterface $router, $secret, $host = null, $port = 80, $user = null, $pass = null, $baseUrl = null, $method = 'POST', $routeName = 'ibrows_deploy_opcache_reset', array $routeParameters = array(), $timeout = 300)
     {
         $this->router = $router;
         $this->secret = $secret;
         $this->host = $host;
         $this->port = $port;
+        $this->user = $user;
+        $this->pass = $pass;
         $this->baseUrl = $baseUrl;
         $this->method = $method;
         $this->routeName = $routeName;
@@ -91,9 +105,11 @@ class OpCacheResetCommand extends AbstractCommand
      */
     protected function getArguments(array $args = array())
     {
-        return array_merge(parent::getArguments(),array(
+        return array_merge(parent::getArguments(), array(
             'host' => $this->host,
             'port' => $this->port,
+            'user' => $this->user,
+            'pass' => $this->pass,
             'baseUrl' => $this->baseUrl,
             'method' => $this->method,
             'routeName' => $this->routeName,
@@ -141,6 +157,10 @@ class OpCacheResetCommand extends AbstractCommand
                 'header' => "OpCacheSecret: ". $this->secret ."\r\n"
             )
         );
+
+        if($args['user'] && $args['pass']){
+            $opts['http']['header'] .= "Authorization: Basic ". base64_encode($args['user'].':'.$args['pass']) ."\r\n";
+        }
 
         $content = @file_get_contents($url, false, stream_context_create($opts));
 

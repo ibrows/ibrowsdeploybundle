@@ -41,6 +41,8 @@
         <parameter key="ibrows_deploy.environment.command.opcachereset.secret">%secret%</parameter>
         <parameter key="ibrows_deploy.environment.command.opcachereset.host" />
         <parameter key="ibrows_deploy.environment.command.opcachereset.port">80</parameter>
+        <parameter key="ibrows_deploy.environment.command.opcachereset.user" />
+        <parameter key="ibrows_deploy.environment.command.opcachereset.pass" />
         <parameter key="ibrows_deploy.environment.command.opcachereset.baseUrl" />
         <parameter key="ibrows_deploy.environment.command.opcachereset.method">POST</parameter>
         <parameter key="ibrows_deploy.environment.command.opcachereset.routeName">ibrows_deploy_opcache_reset</parameter>
@@ -122,6 +124,8 @@
             <argument>%ibrows_deploy.environment.command.opcachereset.secret%</argument>
             <argument>%ibrows_deploy.environment.command.opcachereset.host%</argument>
             <argument>%ibrows_deploy.environment.command.opcachereset.port%</argument>
+            <argument>%ibrows_deploy.environment.command.opcachereset.user%</argument>
+            <argument>%ibrows_deploy.environment.command.opcachereset.pass%</argument>
             <argument>%ibrows_deploy.environment.command.opcachereset.baseUrl%</argument>
             <argument>%ibrows_deploy.environment.command.opcachereset.method%</argument>
             <argument>%ibrows_deploy.environment.command.opcachereset.routeName%</argument>

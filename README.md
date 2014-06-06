@@ -48,7 +48,7 @@ ibrows_deploy:
             mysqldump:
                 - {priority: 1, args: { path: ~/backup/database }}
             opcachereset:
-                - {priority: 2, args: { host: 'integration.projectname.atri.ibrows.ch' }}
+                - {priority: 2, args: { host: 'integration.projectname.atri.ibrows.ch', user: ibrows, pass: 4EmbOAwVyiOSFFLI }}
             cacheclear:
                 - {priority: 3, args: { symfonyEnv: dev }}
                 - {priority: 4, args: { symfonyEnv: prod }}

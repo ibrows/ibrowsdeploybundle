@@ -63,16 +63,17 @@ class EnvironmentManager implements EnvironmentManagerInterface
         $server = $server ?: $this->server;
         $environment = $environment ?: $this->environment;
 
+        $output->writeln('IbrowsDeployBundle: Install for <info>'. $server .'/'. $environment .'</info>');
 
         if(!$commands = $this->getServerEnvironmentCommands($server, $environment)){
-            $output->writeln('IbrowsDeployBundle: <info>No commands for server '. $server .'  and environment '. $environment .'</info>composer');
+            $output->writeln('<info>No commands found for given server/environment</info>');
             return;
         }
 
         foreach($commands as $options){
             /** @var CommandInterface $command */
             $command = $options['command'];
-            $output->writeln('IbrowsDeployBundle: <info>'. $command->getName() .'</info> <comment>'. ($options['args'] ? json_encode($options['args']) : null).'</comment>');
+            $output->writeln('<info>'. $command->getName() .'</info> <comment>'. ($options['args'] ? json_encode($options['args']) : null).'</comment>');
 
             $command->setRunServer($server);
             $command->setRunEnvironment($environment);
@@ -89,15 +90,9 @@ class EnvironmentManager implements EnvironmentManagerInterface
      */
     protected function getServerEnvironmentCommands($server, $environment)
     {
-        $compositeKey = $server.'_'.$environment;
-        if(!isset($this->server_environments[$compositeKey])){
-            return array();
-        }
-
-        $commands = $this->server_environments[$compositeKey];
+        $commands = $this->getCommandsArray($server, $environment);
 
         $chain = array();
-
         foreach($commands as $commandName => $options){
             if(!isset($this->commands[$commandName])){
                 throw new \RuntimeException("Command ". $commandName ." not available");
@@ -116,5 +111,21 @@ class EnvironmentManager implements EnvironmentManagerInterface
         });
 
         return $chain;
+    }
+
+    /**
+     * @param string $server
+     * @param string $environment
+     * @return array
+     */
+    protected function getCommandsArray($server, $environment)
+    {
+        $commands = array();
+        foreach(array($server.'_'.$environment, '*_'.$environment, $server.'_*') as $commandKey){
+            if(isset($this->server_environments[$commandKey])){
+                $commands += $this->server_environments[$commandKey];
+            }
+        }
+        return $commands;
     }
 }

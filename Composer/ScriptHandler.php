@@ -21,6 +21,6 @@ class ScriptHandler extends \Sensio\Bundle\DistributionBundle\Composer\ScriptHan
             return;
         }
 
-        static::executeCommand($event, $appDir, 'ibrows:deploy:run', $options['process-timeout']);
+        static::executeCommand($event, $appDir, 'ibrows:deploy:install', $options['process-timeout']);
     }
 }

@@ -9,12 +9,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Ibrows\DeployBundle\Environment\EnvironmentManagerInterface;
 use Symfony\Component\Process\Process;
 
-class RunCommand extends ContainerAwareCommand
+class InstallCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
         $this
-            ->setName('ibrows:deploy:run')
+            ->setName('ibrows:deploy:install')
             ->addOption('server', null, InputOption::VALUE_REQUIRED)
             ->addOption('environment', null, InputOption::VALUE_REQUIRED)
             ->setDescription('Runs the commands for given server and environment')

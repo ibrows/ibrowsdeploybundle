@@ -14,7 +14,7 @@ class WriteBasicAuthUsersFileCommand extends AbstractCommand
     /**
      * @var string
      */
-    protected $path;
+    protected $path = '~/.htpasswd';
 
     /**
      * @param array $users

@@ -121,7 +121,7 @@ class EnvironmentManager implements EnvironmentManagerInterface
     protected function getCommandsArray($server, $environment)
     {
         $commands = array();
-        foreach(array($server.'_'.$environment, '*_'.$environment, $server.'_*') as $commandKey){
+        foreach(array($server.'_'.$environment, '*_'.$environment, $server.'_*', '*', '*_*', '*^2') as $commandKey){
             if(isset($this->server_environments[$commandKey])){
                 $commands += $this->server_environments[$commandKey];
             }

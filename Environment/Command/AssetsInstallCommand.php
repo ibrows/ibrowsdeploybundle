@@ -16,11 +16,12 @@ class AssetsInstallCommand extends AbstractSymfonyCommand
      * @param string $webDir
      * @param int $timeout
      * @param string $phpExecutablePath
+     * @param string $phpIni
      */
-    public function __construct($kernelRootDir, $webDir = 'web', $timeout = null, $phpExecutablePath = null)
+    public function __construct($kernelRootDir, $webDir = 'web', $timeout = null, $phpExecutablePath = null, $phpIni = null)
     {
         $this->webDir = $webDir;
-        parent::__construct($kernelRootDir, $timeout, $phpExecutablePath);
+        parent::__construct($kernelRootDir, $timeout, $phpExecutablePath, $phpIni);
     }
 
     /**

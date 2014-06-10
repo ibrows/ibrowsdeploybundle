@@ -9,6 +9,7 @@
         <parameter key="ibrows_deploy.environment.command.default.console">%ibrows_deploy.environment.command.default.kernel.root_dir%/console</parameter>
         <parameter key="ibrows_deploy.environment.command.default.timeout">300</parameter>
         <parameter key="ibrows_deploy.environment.command.default.phpExecutablePath" />
+        <parameter key="ibrows_deploy.environment.command.default.phpIni" />
 
         <!-- assetic:dump -->
         <parameter key="ibrows_deploy.environment.command.asseticdump.console">%ibrows_deploy.environment.command.default.console%</parameter>
@@ -16,17 +17,20 @@
         <parameter key="ibrows_deploy.environment.command.asseticdump.force">true</parameter>
         <parameter key="ibrows_deploy.environment.command.asseticdump.timeout">%ibrows_deploy.environment.command.default.timeout%</parameter>
         <parameter key="ibrows_deploy.environment.command.asseticdump.phpExecutablePath">%ibrows_deploy.environment.command.default.phpExecutablePath%</parameter>
+        <parameter key="ibrows_deploy.environment.command.asseticdump.phpIni">%ibrows_deploy.environment.command.default.phpIni%</parameter>
 
         <!-- cache:clear -->
         <parameter key="ibrows_deploy.environment.command.cacheclear.console">%ibrows_deploy.environment.command.default.console%</parameter>
         <parameter key="ibrows_deploy.environment.command.cacheclear.timeout">%ibrows_deploy.environment.command.default.timeout%</parameter>
         <parameter key="ibrows_deploy.environment.command.cacheclear.phpExecutablePath">%ibrows_deploy.environment.command.default.phpExecutablePath%</parameter>
+        <parameter key="ibrows_deploy.environment.command.cacheclear.phpIni">%ibrows_deploy.environment.command.default.phpIni%</parameter>
 
         <!-- assets:install -->
         <parameter key="ibrows_deploy.environment.command.assetsinstall.console">%ibrows_deploy.environment.command.default.console%</parameter>
         <parameter key="ibrows_deploy.environment.command.assetsinstall.webDir">web</parameter>
         <parameter key="ibrows_deploy.environment.command.assetsinstall.timeout">%ibrows_deploy.environment.command.default.timeout%</parameter>
         <parameter key="ibrows_deploy.environment.command.assetsinstall.phpExecutablePath">%ibrows_deploy.environment.command.default.phpExecutablePath%</parameter>
+        <parameter key="ibrows_deploy.environment.command.assetsinstall.phpIni">%ibrows_deploy.environment.command.default.phpIni%</parameter>
 
         <!-- mysqldump -->
         <parameter key="ibrows_deploy.environment.command.mysqldump.path">%kernel.root_dir%/cache</parameter>
@@ -53,6 +57,7 @@
         <parameter key="ibrows_deploy.environment.command.doctrineschemaupdate.console">%ibrows_deploy.environment.command.default.console%</parameter>
         <parameter key="ibrows_deploy.environment.command.doctrineschemaupdate.timeout">%ibrows_deploy.environment.command.default.timeout%</parameter>
         <parameter key="ibrows_deploy.environment.command.doctrineschemaupdate.phpExecutablePath">%ibrows_deploy.environment.command.default.phpExecutablePath%</parameter>
+        <parameter key="ibrows_deploy.environment.command.doctrineschemaupdate.phpIni">%ibrows_deploy.environment.command.default.phpIni%</parameter>
 
         <!-- writebasicauthusersfile -->
         <parameter key="ibrows_deploy.environment.command.writebasicauthusersfile.users">%ibrows_deploy.basic_auth_users%</parameter>
@@ -75,6 +80,7 @@
             <argument>%ibrows_deploy.environment.command.asseticdump.force%</argument>
             <argument>%ibrows_deploy.environment.command.asseticdump.timeout%</argument>
             <argument>%ibrows_deploy.environment.command.asseticdump.phpExecutablePath%</argument>
+            <argument>%ibrows_deploy.environment.command.asseticdump.phpIni%</argument>
             <tag name="ibrows_deploy.command" />
         </service>
 
@@ -82,6 +88,7 @@
             <argument>%ibrows_deploy.environment.command.cacheclear.console%</argument>
             <argument>%ibrows_deploy.environment.command.cacheclear.timeout%</argument>
             <argument>%ibrows_deploy.environment.command.cacheclear.phpExecutablePath%</argument>
+            <argument>%ibrows_deploy.environment.command.cacheclear.phpIni%</argument>
             <tag name="ibrows_deploy.command" />
         </service>
 
@@ -90,6 +97,7 @@
             <argument>%ibrows_deploy.environment.command.assetsinstall.webDir%</argument>
             <argument>%ibrows_deploy.environment.command.assetsinstall.timeout%</argument>
             <argument>%ibrows_deploy.environment.command.assetsinstall.phpExecutablePath%</argument>
+            <argument>%ibrows_deploy.environment.command.assetsinstall.phpIni%</argument>
             <tag name="ibrows_deploy.command" />
         </service>
 
@@ -97,6 +105,7 @@
             <argument>%ibrows_deploy.environment.command.doctrineschemaupdate.console%</argument>
             <argument>%ibrows_deploy.environment.command.doctrineschemaupdate.timeout%</argument>
             <argument>%ibrows_deploy.environment.command.doctrineschemaupdate.phpExecutablePath%</argument>
+            <argument>%ibrows_deploy.environment.command.doctrineschemaupdate.phpIni%</argument>
             <tag name="ibrows_deploy.command" />
         </service>
 

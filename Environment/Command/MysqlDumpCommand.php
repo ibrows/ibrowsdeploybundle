@@ -112,14 +112,6 @@ class MysqlDumpCommand extends AbstractCommand
     /**
      * @return string
      */
-    protected function getHomeDirectory()
-    {
-        return trim(shell_exec('cd ~ && pwd'));
-    }
-
-    /**
-     * @return string
-     */
     public function getName()
     {
         return 'mysqldump';

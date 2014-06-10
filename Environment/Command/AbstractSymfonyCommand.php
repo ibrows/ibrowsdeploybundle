@@ -18,14 +18,21 @@ abstract class AbstractSymfonyCommand extends AbstractCommand
     protected $phpExecutable;
 
     /**
+     * @var string
+     */
+    protected $phpIni;
+
+    /**
      * @param string $console
      * @param int $timeout
-     * @param null $phpExecutable
+     * @param string $phpExecutable
+     * @param string $phpIni
      */
-    public function __construct($console, $timeout = 300, $phpExecutable = null)
+    public function __construct($console, $timeout = 300, $phpExecutable = null, $phpIni = null)
     {
         $this->console = $console;
         $this->phpExecutable = $phpExecutable;
+        $this->phpIni = $phpIni;
         parent::__construct($timeout);
     }
 
@@ -37,7 +44,8 @@ abstract class AbstractSymfonyCommand extends AbstractCommand
     {
         return array_merge(parent::getArguments(), array(
             'console' => $this->console,
-            'phpExecutable' => $this->phpExecutable ?: $this->getPhpExecutablePath()
+            'phpExecutable' => $this->phpExecutable ?: $this->getPhpExecutablePath(),
+            'phpIni' => $this->phpIni
         ), $args);
     }
 
@@ -53,13 +61,11 @@ abstract class AbstractSymfonyCommand extends AbstractCommand
         $php = escapeshellarg($args['phpExecutable']);
         $console = escapeshellarg($args['console']);
 
-        $cmd = $php .' '. $console .' '. $this->getCommand($args);
+        $cmd = $php . ($args['phpIni'] ? ' -c '. escapeshellarg($this->getRealPath($args['phpIni'])) : null ) .' '. $console .' '. $this->getCommand($args);
 
         if(isset($args['symfonyEnv'])){
             $cmd .= ' --env='. $args['symfonyEnv'];
         }
-
-
 
         if(isset($args['symfonyVerbose'])){
             $vcount = (int) $args['symfonyVerbose'];

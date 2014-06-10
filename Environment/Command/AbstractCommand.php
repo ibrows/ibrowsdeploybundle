@@ -72,10 +72,15 @@ abstract class AbstractCommand implements CommandInterface
         return $this->execute($this->getCommand($args, $callback));
     }
 
-    protected function  getCallback($args, OutputInterface $output ){
+    /**
+     * @param array $args
+     * @param OutputInterface $output
+     * @return callable|null
+     */
+    protected function getCallback($args, OutputInterface $output){
         $callback = null;
         if($args['output']) {
-            $callback = function($type,$buffer) use ($output) { $output->write($buffer);};
+            $callback = function($type, $buffer) use ($output){$output->write($buffer);};
         }
         return $callback;
     }
@@ -88,7 +93,7 @@ abstract class AbstractCommand implements CommandInterface
     {
         return array_merge(array(
             'timeout' => $this->getTimeout(),
-            'output' => $this->getOutput(),
+            'output' => $this->getOutput()
         ), $args);
     }
 
@@ -132,6 +137,29 @@ abstract class AbstractCommand implements CommandInterface
     protected function getRunServer()
     {
         return $this->runServer;
+    }
+
+    /**
+     * @param string $path
+     * @return string
+     */
+    protected function getRealPath($path)
+    {
+        if($path[0] == '~'){
+            $path = $this->getHomeDirectory() . substr($path, 1);
+        }
+        return $path;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getHomeDirectory()
+    {
+        $pwd = shell_exec('pwd');
+        $home = trim(shell_exec('cd ~ && pwd'));
+        shell_exec('cd '. escapeshellarg($pwd));
+        return $home;
     }
 
     /**

@@ -22,12 +22,13 @@ class AsseticDumpCommand extends AbstractSymfonyCommand
      * @param bool $force
      * @param int $timeout
      * @param string $phpExecutablePath
+     * @param string $phpIni
      */
-    public function __construct($kernelRootDir, $writeTo = 'web', $force = false, $timeout = null, $phpExecutablePath = null)
+    public function __construct($kernelRootDir, $writeTo = 'web', $force = false, $timeout = null, $phpExecutablePath = null, $phpIni = null)
     {
         $this->writeTo = $writeTo;
         $this->force = $force;
-        parent::__construct($kernelRootDir, $timeout, $phpExecutablePath);
+        parent::__construct($kernelRootDir, $timeout, $phpExecutablePath, $phpIni);
     }
 
     /**

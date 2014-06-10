@@ -78,26 +78,6 @@ class WriteBasicAuthUsersFileCommand extends AbstractCommand
     }
 
     /**
-     * @param string $path
-     * @return string
-     */
-    protected function getRealPath($path)
-    {
-        if($path[0] == '~'){
-            $path = $this->getHomeDirectory() . substr($path, 1);
-        }
-        return $path;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getHomeDirectory()
-    {
-        return trim(shell_exec('cd ~ && pwd'));
-    }
-
-    /**
      * @param string $plainpasswd
      * @return string
      * @see http://techtalk.virendrachandak.com/using-php-create-passwords-for-htpasswd-file/

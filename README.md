@@ -80,7 +80,7 @@ security:
         - { path: ^/ibrows/deploy/opcache/reset, role: IS_AUTHENTICATED_ANONYMOUSLY }
 ```
 
-Parameters (DO NOT SET DEFAULT VALUES HERE!) If you set default server to 'localhost' and environment to 'dev' it's verly likely that a production server will get those parameters as well and start to schema update with --force --complete for example
+parameters.yml.dist (DO NOT SET DEFAULT VALUES HERE!) If you set default server to 'localhost' and environment to 'dev' it's verly likely that a production server will get those parameters as well and start to schema update with --force --complete for example
 
 ```yaml
 deploy_server: ~

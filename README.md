@@ -47,8 +47,8 @@ ibrows_deploy:
         atrila_production:
             mysqldump:
                 - {priority: 1, args: { path: ~/backup/database }}
-            opcachereset:
-                - {priority: 2, args: { host: 'integration.projectname.atri.ibrows.ch', user: ibrows, pass: 4EmbOAwVyiOSFFLI }}
+            #opcachereset: # - not needed on atrila server because switch_env command on shell will also clear opcache
+                #- {priority: 2, args: { host: 'integration.projectname.atri.ibrows.ch', user: ibrows, pass: 4EmbOAwVyiOSFFLI }}
             cacheclear:
                 - {priority: 3, args: { symfonyEnv: dev }}
                 - {priority: 4, args: { symfonyEnv: prod }}
@@ -62,7 +62,7 @@ ibrows_deploy:
                 - {priority: 0}
 ```
 
-Routing (for OpCache Reset)
+Routing (for OpCache Reset) - not needed on atrila server because switch_env command on shell will also clear opcache
 
 ```yaml
 # IbrowsDeployBundle (for OpCache Reset)
@@ -72,7 +72,7 @@ ibrows_deploy:
     prefix:   /
 ```
 
-Security (for OpCache Reset)
+Security (for OpCache Reset) - not needed on atrila server because switch_env command on shell will also clear opcache
 
 ```yaml
 security:

@@ -104,7 +104,7 @@ composer.json
 
 ```json
 "require": {
-    "ibrows/deploy-bundle": "1.*"
+    "ibrows/deploy-bundle": "2.*"
 },
 "scripts": {
     "post-install-cmd": [

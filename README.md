@@ -1,6 +1,12 @@
 IbrowsDeployBundle
 ==================
 
+```sh
+composer install # --> local installation and cache:clear, schema:update, etc.
+php app/console ibrows:deploy test # --> Tag current version in GIT with test_X (X is calculated automatically)
+php app/console ibrows:deploy test --immediate="atrila" # --> Same as above, but connects afterwards over ssh to atrila and execute "ibrows_deploy" so you dont have to wait
+```
+
 Configuration
 
 ```yaml

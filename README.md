@@ -10,6 +10,15 @@ ibrows_deploy:
     basic_auth_users:
         - { user: ibrows, pass: 4EmbOAwVyiOSFFLI }
         - { user: projectname, pass: projectpass }
+    immediate_process_strategies:
+        atrila:
+            serviceid: ibrows_deploy.server.immediateprocessstrategy.atrila
+            options:
+                user: apollonia
+                passphrase: %deploy_atrila_ssh_passphrase%
+                publicKeyFile: %deploy_atrila_ssh_publickeyfile%
+                privateKeyFile: %deploy_atrila_ssh_publickeyfile%
+                config: %deploy_atrila_ssh_config%
     server_environments:
         localhost_dev:
             cacheclear:
@@ -80,11 +89,15 @@ security:
         - { path: ^/ibrows/deploy/opcache/reset, role: IS_AUTHENTICATED_ANONYMOUSLY }
 ```
 
-parameters.yml.dist (DO NOT SET DEFAULT VALUES HERE!) If you set default server to 'localhost' and environment to 'dev' it's verly likely that a production server will get those parameters as well and start to schema update with --force --complete for example
+parameters.yml.dist (DO NOT SET DEFAULT VALUES ON deploy_server OR deploy_environment!) If you set default server to 'localhost' and environment to 'dev' it's verly likely that a production server will get those parameters as well and start to schema update with --force --complete for example
 
 ```yaml
 deploy_server: ~
 deploy_environment: ~
+deploy_atrila_ssh_passphrase: ASK
+deploy_atrila_ssh_publickeyfile: ~
+deploy_atrila_ssh_privatekeyfile: ~
+deploy_atrila_ssh_config: ~
 ```
 
 composer.json

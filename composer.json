@@ -13,6 +13,7 @@
         "symfony/dependency-injection": "~2.3.0",
         "symfony/process": "~2.3.0",
         "symfony/console": "~2.3.0",
-        "symfony/framework-bundle": "~2.3.0"
+        "symfony/framework-bundle": "~2.3.0",
+        "herzult/php-ssh": "dev-master#fe073dccae9aa5bca70da07e47515e2843ee3fa4"
     }
 }

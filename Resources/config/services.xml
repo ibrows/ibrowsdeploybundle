@@ -63,6 +63,8 @@
         <parameter key="ibrows_deploy.environment.command.writebasicauthusersfile.users">%ibrows_deploy.basic_auth_users%</parameter>
         <parameter key="ibrows_deploy.environment.command.writebasicauthusersfile.path">~/.htpasswd</parameter>
         <parameter key="ibrows_deploy.environment.command.writebasicauthusersfile.timeout">%ibrows_deploy.environment.command.default.timeout%</parameter>
+
+        <!-- ImmediateProcessStrategyManager -->
     </parameters>
 
     <services>
@@ -141,6 +143,15 @@
             <argument>%ibrows_deploy.environment.command.opcachereset.routeParameters%</argument>
             <argument>%ibrows_deploy.environment.command.opcachereset.timeout%</argument>
             <tag name="ibrows_deploy.command" />
+        </service>
+
+        <!-- ImmediateProcessStrategies -->
+        <service id="ibrows_deploy.server.immediateprocessmanager" class="Ibrows\DeployBundle\Server\ImmediateProcessManager">
+            <argument>%ibrows_deploy.immediate_process_strategies%</argument>
+        </service>
+
+        <service id="ibrows_deploy.server.immediateprocessstrategy.atrila" class="Ibrows\DeployBundle\Server\AtrilaImmediateProcessStrategy">
+            <tag name="ibrows_deploy.immediateprocessstrategy" />
         </service>
     </services>
 </container>

@@ -156,10 +156,7 @@ abstract class AbstractCommand implements CommandInterface
      */
     protected function getHomeDirectory()
     {
-        $pwd = trim(shell_exec('pwd'));
-        $home = trim(shell_exec('cd ~ && pwd'));
-        shell_exec('cd '. escapeshellarg($pwd));
-        return $home;
+        return getenv('HOME');
     }
 
     /**

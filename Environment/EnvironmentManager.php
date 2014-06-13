@@ -21,7 +21,7 @@ class EnvironmentManager implements EnvironmentManagerInterface
     /**
      * @var array
      */
-    protected $server_environments;
+    protected $serverEnvironments;
 
     /**
      * @var array
@@ -31,13 +31,13 @@ class EnvironmentManager implements EnvironmentManagerInterface
     /**
      * @param string $server
      * @param string $environment
-     * @param array $server_environments
+     * @param array $serverEnvironments
      */
-    public function __construct($server, $environment, array $server_environments)
+    public function __construct($server, $environment, array $serverEnvironments)
     {
         $this->server = $server;
         $this->environment = $environment;
-        $this->server_environments = $server_environments;
+        $this->serverEnvironments = $serverEnvironments;
     }
 
     /**
@@ -122,8 +122,8 @@ class EnvironmentManager implements EnvironmentManagerInterface
     {
         $commands = array();
         foreach(array($server.'_'.$environment, '*_'.$environment, $server.'_*', '*', '*_*', '*^2') as $commandKey){
-            if(isset($this->server_environments[$commandKey])){
-                $commands += $this->server_environments[$commandKey];
+            if(isset($this->serverEnvironments[$commandKey])){
+                $commands += $this->serverEnvironments[$commandKey];
             }
         }
         return $commands;

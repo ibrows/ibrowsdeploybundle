@@ -2,19 +2,22 @@
 
 namespace Ibrows\DeployBundle\Command;
 
-use Symfony\Component\Console\Command\Command;
+use Ibrows\DeployBundle\Server\ImmediateProcessManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class DeployCommand extends Command
+class DeployCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
         $this
             ->setName('ibrows:deploy')
             ->addArgument('environment', InputArgument::REQUIRED, 'Tag to deploy: test|integration')
-            ->setDescription('Tags local a new test or integration tag in git and pushes to remote');
+            ->addOption('immediate', null, InputOption::VALUE_REQUIRED, 'Immediate execute deploy process on server')
+            ->setDescription('Tags local a new test or integration tag in git and pushes to remote')
         ;
     }
 
@@ -32,10 +35,41 @@ class DeployCommand extends Command
             throw new \RuntimeException('Only "test" and "integration" is allowed to tag/deploy');
         }
 
-        $newNumber = $this->getNewTagNumber($env);
+        $this->tag($env, $output);
 
+        if($server = $input->getOption('immediate')){
+            $this->immediate($env, $server, $output);
+        }
+    }
+
+    /**
+     * @param string $env
+     * @param string $server
+     * @param OutputInterface $output
+     */
+    protected function immediate($env, $server, OutputInterface $output)
+    {
+        $output->writeln('Immediate start deployment on '. $server);
+        $this->getImmediateProcessManager()->execute($env, $server, $output, $this->getHelperSet());
+    }
+
+    /**
+     * @param string $env
+     * @param OutputInterface $output
+     */
+    protected function tag($env, OutputInterface $output)
+    {
+        $newNumber = $this->getNewTagNumber($env);
         $output->writeln('Tagging "'. $env .'" with number '. $newNumber .' (<info>'. $env .'_'. $newNumber .'</info>)');
         $output->writeln(shell_exec('git tag '. escapeshellarg($env.'_'. $newNumber).' && git push --tags'));
+    }
+
+    /**
+     * @return ImmediateProcessManagerInterface
+     */
+    protected function getImmediateProcessManager()
+    {
+        return $this->getContainer()->get('ibrows_deploy.server.immediateprocessmanager');
     }
 
     /**

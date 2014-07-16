@@ -20,7 +20,7 @@ ibrows_deploy:
         atrila:
             serviceid: ibrows_deploy.server.immediateprocessstrategy.atrila
             options:
-                user: apollonia
+                user: __SSH_USER__
                 passphrase: %deploy_atrila_ssh_passphrase%
                 publicKeyFile: %deploy_atrila_ssh_publickeyfile%
                 privateKeyFile: %deploy_atrila_ssh_publickeyfile%

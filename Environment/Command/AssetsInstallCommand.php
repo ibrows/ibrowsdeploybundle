@@ -12,15 +12,22 @@ class AssetsInstallCommand extends AbstractSymfonyCommand
     protected $webDir = 'web';
 
     /**
+     * @var bool
+     */
+    protected $symlink = false;
+
+    /**
      * @param string $kernelRootDir
      * @param string $webDir
+     * @param bool $symlink
      * @param int $timeout
      * @param string $phpExecutablePath
      * @param string $phpIni
      */
-    public function __construct($kernelRootDir, $webDir = 'web', $timeout = null, $phpExecutablePath = null, $phpIni = null)
+    public function __construct($kernelRootDir, $webDir = 'web', $symlink = false, $timeout = null, $phpExecutablePath = null, $phpIni = null)
     {
         $this->webDir = $webDir;
+        $this->symlink = $symlink;
         parent::__construct($kernelRootDir, $timeout, $phpExecutablePath, $phpIni);
     }
 
@@ -32,6 +39,7 @@ class AssetsInstallCommand extends AbstractSymfonyCommand
     {
         return array_merge(parent::getArguments(), array(
             'webDir' => $this->webDir,
+            'symlink' => $this->symlink
         ), $args);
     }
 
@@ -42,6 +50,10 @@ class AssetsInstallCommand extends AbstractSymfonyCommand
     public function getCommand(array $args)
     {
         $cmd = 'assets:install';
+
+        if($args['symlink']){
+            $cmd .= ' --symlink';
+        }
 
         if($args['webDir']){
             $cmd .= ' '. escapeshellarg($args['webDir']);

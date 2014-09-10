@@ -28,6 +28,7 @@
         <!-- assets:install -->
         <parameter key="ibrows_deploy.environment.command.assetsinstall.console">%ibrows_deploy.environment.command.default.console%</parameter>
         <parameter key="ibrows_deploy.environment.command.assetsinstall.webDir">web</parameter>
+        <parameter key="ibrows_deploy.environment.command.assetsinstall.symlink">false</parameter>
         <parameter key="ibrows_deploy.environment.command.assetsinstall.timeout">%ibrows_deploy.environment.command.default.timeout%</parameter>
         <parameter key="ibrows_deploy.environment.command.assetsinstall.phpExecutablePath">%ibrows_deploy.environment.command.default.phpExecutablePath%</parameter>
         <parameter key="ibrows_deploy.environment.command.assetsinstall.phpIni">%ibrows_deploy.environment.command.default.phpIni%</parameter>
@@ -97,6 +98,7 @@
         <service id="ibrows_deploy.environment.command.assetsinstall" class="Ibrows\DeployBundle\Environment\Command\AssetsInstallCommand">
             <argument>%ibrows_deploy.environment.command.assetsinstall.console%</argument>
             <argument>%ibrows_deploy.environment.command.assetsinstall.webDir%</argument>
+            <argument>%ibrows_deploy.environment.command.assetsinstall.symlink%</argument>
             <argument>%ibrows_deploy.environment.command.assetsinstall.timeout%</argument>
             <argument>%ibrows_deploy.environment.command.assetsinstall.phpExecutablePath%</argument>
             <argument>%ibrows_deploy.environment.command.assetsinstall.phpIni%</argument>

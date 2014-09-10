@@ -30,7 +30,7 @@ ibrows_deploy:
             cacheclear:
                 - {priority: 1, args: { symfonyEnv: dev }}
             assetsinstall:
-                - {priority: 2}
+                - {priority: 2, args: { symlink: true }}
             asseticdump:
                 - {priority: 3, args: { symfonyEnv: dev }}
             doctrineschemaupdate:

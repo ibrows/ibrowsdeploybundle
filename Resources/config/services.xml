@@ -65,6 +65,9 @@
         <parameter key="ibrows_deploy.environment.command.writebasicauthusersfile.path">~/.htpasswd</parameter>
         <parameter key="ibrows_deploy.environment.command.writebasicauthusersfile.timeout">%ibrows_deploy.environment.command.default.timeout%</parameter>
 
+        <!-- shellcommand -->
+        <parameter key="ibrows_deploy.environment.command.shellcommand.timeout">%ibrows_deploy.environment.command.default.timeout%</parameter>
+
         <!-- ImmediateProcessStrategyManager -->
     </parameters>
 
@@ -144,6 +147,11 @@
             <argument>%ibrows_deploy.environment.command.opcachereset.routeName%</argument>
             <argument>%ibrows_deploy.environment.command.opcachereset.routeParameters%</argument>
             <argument>%ibrows_deploy.environment.command.opcachereset.timeout%</argument>
+            <tag name="ibrows_deploy.command" />
+        </service>
+
+        <service id="ibrows_deploy.environment.command.shellcommand" class="Ibrows\DeployBundle\Environment\Command\ShellCommand">
+            <argument>%ibrows_deploy.environment.command.shellcommand.timeout%</argument>
             <tag name="ibrows_deploy.command" />
         </service>
 

@@ -85,11 +85,7 @@ class MysqlDumpCommand extends AbstractCommand
         }
 
         $file = $path .'/'. $this->getRunServer() .'_'. $this->getRunEnvironment() .'_'. date($args['dateFormat']).'.sql'.($args['gzip'] ? '.gz' : null);
-
-        $mkdirCommand = 'mkdir -p '. escapeshellarg($args['path']);
-        $dumpCommand = 'mysqldump -u '. escapeshellarg($args['user']) .' -p'. escapeshellarg($args['password']) .' '. escapeshellarg($args['name']) .''.($args['gzip'] ? ' | gzip' : null).' > '. escapeshellarg($file);
-
-        return $mkdirCommand.' && '. $dumpCommand;
+        return 'mysqldump -u '. escapeshellarg($args['user']) .' -p'. escapeshellarg($args['password']) .' '. escapeshellarg($args['name']) .''.($args['gzip'] ? ' | gzip' : null).' > '. escapeshellarg($file);
     }
 
     /**

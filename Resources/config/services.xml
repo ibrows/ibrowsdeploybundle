@@ -68,6 +68,12 @@
         <!-- shellcommand -->
         <parameter key="ibrows_deploy.environment.command.shellcommand.timeout">%ibrows_deploy.environment.command.default.timeout%</parameter>
 
+        <!-- symfonycommand -->
+        <parameter key="ibrows_deploy.environment.command.symfonycommand.console">%ibrows_deploy.environment.command.default.console%</parameter>
+        <parameter key="ibrows_deploy.environment.command.symfonycommand.timeout">%ibrows_deploy.environment.command.default.timeout%</parameter>
+        <parameter key="ibrows_deploy.environment.command.symfonycommand.phpExecutablePath">%ibrows_deploy.environment.command.default.phpExecutablePath%</parameter>
+        <parameter key="ibrows_deploy.environment.command.symfonycommand.phpIni">%ibrows_deploy.environment.command.default.phpIni%</parameter>
+
         <!-- ImmediateProcessStrategyManager -->
     </parameters>
 
@@ -152,6 +158,14 @@
 
         <service id="ibrows_deploy.environment.command.shellcommand" class="Ibrows\DeployBundle\Environment\Command\ShellCommand">
             <argument>%ibrows_deploy.environment.command.shellcommand.timeout%</argument>
+            <tag name="ibrows_deploy.command" />
+        </service>
+
+        <service id="ibrows_deploy.environment.command.symfonycommand" class="Ibrows\DeployBundle\Environment\Command\SymfonyCommand">
+            <argument>%ibrows_deploy.environment.command.symfonycommand.console%</argument>
+            <argument>%ibrows_deploy.environment.command.symfonycommand.timeout%</argument>
+            <argument>%ibrows_deploy.environment.command.symfonycommand.phpExecutablePath%</argument>
+            <argument>%ibrows_deploy.environment.command.symfonycommand.phpIni%</argument>
             <tag name="ibrows_deploy.command" />
         </service>
 

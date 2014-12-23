@@ -72,6 +72,6 @@ class NineImmediateProcessStrategy implements ImmediateProcessStrategyInterface
         $exec = $session->getExec();
 
         $output->writeln('Executing now ibrows_deploy - this process can take several minutes');
-        $output->writeln($exec->run('ibrows_deploy -y '. escapeshellarg($env)));
+        $output->writeln($exec->run('/home/' . $options['user'] . '/bin/ibrows_deploy -y '. escapeshellarg($env)));
     }
 }

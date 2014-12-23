@@ -13,26 +13,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 class NineImmediateProcessStrategy implements ImmediateProcessStrategyInterface
 {
     /**
-     * @var string
-     */
-    protected $devHost;
-
-    /**
-     * @var string
-     */
-    protected $prodHost;
-
-    /**
-     * @param string $devHost
-     * @param string $prodHost
-     */
-    public function __construct($devHost = 'ibrows3.nine.ch', $prodHost = 'ibrows2.nine.ch')
-    {
-        $this->devHost = $devHost;
-        $this->prodHost = $prodHost;
-    }
-
-    /**
      * Starting the deploy process on a server
      * @param string $env
      * @param array $options
@@ -43,7 +23,7 @@ class NineImmediateProcessStrategy implements ImmediateProcessStrategyInterface
     public function execute($env, array $options, OutputInterface $output, HelperSet $helperSet)
     {
         $options = array_merge(array(
-            'host' => $env == 'production' ? $this->prodHost : $this->devHost,
+            'host' => '',
             'port' => 22,
             'config' => null,
             'passphrase' => null,

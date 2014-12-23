@@ -177,5 +177,8 @@
         <service id="ibrows_deploy.server.immediateprocessstrategy.atrila" class="Ibrows\DeployBundle\Server\AtrilaImmediateProcessStrategy">
             <tag name="ibrows_deploy.immediateprocessstrategy" />
         </service>
+        <service id="ibrows_deploy.server.immediateprocessstrategy.nine" class="Ibrows\DeployBundle\Server\NineImmediateProcessStrategy">
+            <tag name="ibrows_deploy.immediateprocessstrategy" />
+        </service>
     </services>
 </container>

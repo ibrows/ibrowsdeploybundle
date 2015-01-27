@@ -15,7 +15,8 @@ class DoctrineSchemaUpdateCommand extends AbstractSymfonyCommand
         return array_merge(parent::getArguments(), array(
             'force' => false,
             'dumpSql' => true,
-            'complete' => false
+            'complete' => false,
+            'em' => false
         ), $args);
     }
 
@@ -26,7 +27,6 @@ class DoctrineSchemaUpdateCommand extends AbstractSymfonyCommand
     public function getCommand(array $args)
     {
         $cmd = 'doctrine:schema:update';
-
         if($args['force']){
             $cmd .= ' --force';
         }
@@ -37,6 +37,10 @@ class DoctrineSchemaUpdateCommand extends AbstractSymfonyCommand
 
         if($args['complete']){
             $cmd .= ' --complete';
+        }
+
+        if($args['em']){
+            $cmd .= ' --em='.escapeshellarg($args['em']);
         }
 
         return $cmd;

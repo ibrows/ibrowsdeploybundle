@@ -69,7 +69,7 @@ abstract class AbstractCommand implements CommandInterface
     {
         $args = $this->getArguments($args);
         $callback = $this->getCallback($args,$output);
-        return $this->execute($this->getCommand($args, $callback));
+        return $this->execute($this->getCommand($args, $callback),null, (!isset( $args['needSuccessful']) || $args['needSuccessful']) );
     }
 
     /**
@@ -103,12 +103,11 @@ abstract class AbstractCommand implements CommandInterface
      * @throws \RuntimeException
      * @return int|null
      */
-    protected function execute($cmd, $callback = null)
+    protected function execute($cmd, $callback = null, $needSuccessful = true)
     {
         $process = new Process($cmd, null, null, null, $this->getTimeout());
         $process->run($callback);
-
-        if(!$process->isSuccessful()){
+        if(!$process->isSuccessful() && $needSuccessful){
             throw new \RuntimeException(sprintf('An error occurred when executing the "%s" command.', $cmd));
         }
 
@@ -158,6 +157,7 @@ abstract class AbstractCommand implements CommandInterface
     {
         return getenv('HOME');
     }
+
 
     /**
      * @param array $args

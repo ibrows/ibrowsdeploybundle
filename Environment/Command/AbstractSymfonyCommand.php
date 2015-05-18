@@ -42,7 +42,7 @@ abstract class AbstractSymfonyCommand extends AbstractCommand
      */
     protected function getArguments(array $args = array())
     {
-        return array_merge(parent::getArguments(), array(
+        return array_merge(parent::getArguments($args), array(
             'console' => $this->console,
             'phpExecutable' => $this->phpExecutable ?: $this->getPhpExecutablePath(),
             'phpIni' => $this->phpIni
@@ -78,7 +78,7 @@ abstract class AbstractSymfonyCommand extends AbstractCommand
             }
         }
         $callback = $this->getCallback($args,$output);
-        return $this->execute($cmd, $callback);
+        return $this->execute($cmd, $callback, (!isset( $args['needSuccessful']) || $args['needSuccessful']));
     }
 
     /**

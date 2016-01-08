@@ -14,13 +14,13 @@ class ScriptHandler extends \Sensio\Bundle\DistributionBundle\Composer\ScriptHan
     public static function deploy(CommandEvent $event)
     {
         $options = self::getOptions($event);
-        $appDir = $options['symfony-app-dir'];
+        $binDir = $options['symfony-bin-dir'];
 
-        if(!is_dir($appDir)){
-            echo 'The symfony-app-dir ('. $appDir .') specified in composer.json was not found in '. getcwd() .', can not deploy.'.PHP_EOL;
+        if(!is_dir($binDir)){
+            echo 'The symfony-bin-dir ('. $binDir .') specified in composer.json was not found in '. getcwd() .', can not deploy.'.PHP_EOL;
             return;
         }
 
-        static::executeCommand($event, $appDir, 'ibrows:deploy:install', $options['process-timeout']);
+        static::executeCommand($event, $binDir, 'ibrows:deploy:install', $options['process-timeout']);
     }
 }

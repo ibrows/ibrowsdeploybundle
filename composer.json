@@ -3,18 +3,18 @@
     "description": "Bundle for executing commands after deployment or composer install based on current server and/or environment",
     "keywords": ["ibrows", "deploy", "deployment"],
     "type": "symfony-bundle",
-    "license": "MIT",
+    "license": "proprietary",
     "autoload": {
         "psr-4": { "Ibrows\\DeployBundle\\": "" }
     },
     "require": {
-        "symfony/config": "~2.3|~3.0",
-        "symfony/http-kernel": "~2.3|~3.0",
-        "symfony/dependency-injection": "~2.3|~3.0",
-        "symfony/process": "~2.3|~3.0",
-        "symfony/console": "~2.3|~3.0",
-        "symfony/framework-bundle": "~2.3|~3.0",
-        "symfony/security": "~2.3|~3.0",
+        "symfony/config": "~3.0",
+        "symfony/http-kernel": "~3.0",
+        "symfony/dependency-injection": "~3.0",
+        "symfony/process": "~3.0",
+        "symfony/console": "~3.0",
+        "symfony/framework-bundle": "~3.0",
+        "symfony/security": "~3.0",
         "mikemeier/php-ssh": "1.*"
     }
 }

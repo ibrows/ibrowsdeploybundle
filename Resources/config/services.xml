@@ -6,7 +6,7 @@
     <parameters>
         <!-- Defaults -->
         <parameter key="ibrows_deploy.environment.command.default.kernel.root_dir">%kernel.root_dir%</parameter>
-        <parameter key="ibrows_deploy.environment.command.default.console">%ibrows_deploy.environment.command.default.kernel.root_dir%/console</parameter>
+        <parameter key="ibrows_deploy.environment.command.default.console">%ibrows_deploy.environment.command.default.kernel.root_dir%/../bin/console</parameter>
         <parameter key="ibrows_deploy.environment.command.default.timeout">300</parameter>
         <parameter key="ibrows_deploy.environment.command.default.phpExecutablePath" />
         <parameter key="ibrows_deploy.environment.command.default.phpIni" />

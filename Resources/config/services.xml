@@ -33,6 +33,9 @@
         <parameter key="ibrows_deploy.environment.command.assetsinstall.phpExecutablePath">%ibrows_deploy.environment.command.default.phpExecutablePath%</parameter>
         <parameter key="ibrows_deploy.environment.command.assetsinstall.phpIni">%ibrows_deploy.environment.command.default.phpIni%</parameter>
 
+        <!-- build bootstrap -->
+        <parameter key="ibrows_deploy.environment.command.bootstrap_build.directory">%ibrows_deploy.environment.command.default.kernel.root_dir%/../var/</parameter>
+
         <!-- mysqldump -->
         <parameter key="ibrows_deploy.environment.command.mysqldump.path">%kernel.root_dir%/cache</parameter>
         <parameter key="ibrows_deploy.environment.command.mysqldump.gzip">true</parameter>
@@ -111,6 +114,11 @@
             <argument>%ibrows_deploy.environment.command.assetsinstall.timeout%</argument>
             <argument>%ibrows_deploy.environment.command.assetsinstall.phpExecutablePath%</argument>
             <argument>%ibrows_deploy.environment.command.assetsinstall.phpIni%</argument>
+            <tag name="ibrows_deploy.command" />
+        </service>
+
+        <service id="ibrows_deploy.environment.command.bootstrap_build" class="Ibrows\DeployBundle\Environment\Command\BuildBootstrapCommand">
+            <argument>%ibrows_deploy.environment.command.bootstrap_build.directory%</argument>
             <tag name="ibrows_deploy.command" />
         </service>
 

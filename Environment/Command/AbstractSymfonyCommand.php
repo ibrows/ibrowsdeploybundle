@@ -67,6 +67,10 @@ abstract class AbstractSymfonyCommand extends AbstractCommand
             $cmd .= ' --env='. $args['symfonyEnv'];
         }
 
+        if(isset($args['symfonyKernel'])){
+            $cmd .= ' --kernel='. $args['symfonyKernel'];
+        }
+
         if(isset($args['symfonyVerbose'])){
             $vcount = (int) $args['symfonyVerbose'];
             if($vcount > 0){

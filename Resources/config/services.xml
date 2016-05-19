@@ -122,6 +122,14 @@
             <tag name="ibrows_deploy.command" />
         </service>
 
+        <service id="ibrows_deploy.environment.command.doctrinedatabasecreate" class="Ibrows\DeployBundle\Environment\Command\DoctrineDatabaseCreateCommand">
+            <argument>%ibrows_deploy.environment.command.doctrineschemaupdate.console%</argument>
+            <argument>%ibrows_deploy.environment.command.doctrineschemaupdate.timeout%</argument>
+            <argument>%ibrows_deploy.environment.command.doctrineschemaupdate.phpExecutablePath%</argument>
+            <argument>%ibrows_deploy.environment.command.doctrineschemaupdate.phpIni%</argument>
+            <tag name="ibrows_deploy.command" />
+        </service>
+
         <!-- ShellCommands -->
         <service id="ibrows_deploy.environment.command.mysqldump" class="Ibrows\DeployBundle\Environment\Command\MysqlDumpCommand">
             <argument>%ibrows_deploy.environment.command.mysqldump.path%</argument>

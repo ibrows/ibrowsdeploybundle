@@ -14,7 +14,10 @@ class DoctrineDatabaseCreateCommand extends AbstractSymfonyCommand
     protected function getArguments(array $args = array())
     {
         return array_merge(parent::getArguments(), array(
-            'connection' => false
+            'connection' => false,
+            // default value for needSuccessfully is false because this task will fail when there is database already
+            // option --if-not-exists was added in doctrine bundle but it's only included in symfony 3.0
+            'needSuccessfully' => false
         ), $args);
     }
 
@@ -24,7 +27,7 @@ class DoctrineDatabaseCreateCommand extends AbstractSymfonyCommand
      */
     public function getCommand(array $args)
     {
-        $cmd = 'doctrine:database:create';
+        $cmd = 'doctrine:database:create --if-not-exists';
 
         if($args['connection']){
             $cmd .= sprintf(' --connection=%s', $args['connection']);

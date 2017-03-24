@@ -14,14 +14,14 @@ class WriteBasicAuthUsersFileCommand extends AbstractCommand
     /**
      * @var string
      */
-    protected $path = '~/.htpasswd';
+    protected $path;
 
     /**
-     * @param array $users
      * @param string $path
+     * @param array $users
      * @param int $timeout
      */
-    public function __construct(array $users = array(), $path = '~/.htpasswd', $timeout = 300)
+    public function __construct($path, array $users = array(), $timeout = 300)
     {
         $this->users = $users;
         $this->path = $path;
@@ -48,6 +48,10 @@ class WriteBasicAuthUsersFileCommand extends AbstractCommand
      */
     public function run(array $args, OutputInterface $output)
     {
+        if (false === $this->isAccessRestricted()) {
+            return;
+        }
+
         $args = $this->getArguments($args);
 
         $content = array();
@@ -113,5 +117,18 @@ class WriteBasicAuthUsersFileCommand extends AbstractCommand
             "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
 
         return "$"."apr1"."$".$salt."$".$tmp;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function isAccessRestricted()
+    {
+        $envVar = getenv('SYMFONY_ACCESS');
+        if ($envVar === "true") {
+            return true;
+        }
+
+        return false;
     }
 }

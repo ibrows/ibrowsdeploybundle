@@ -65,7 +65,7 @@
 
         <!-- writebasicauthusersfile -->
         <parameter key="ibrows_deploy.environment.command.writebasicauthusersfile.users">%ibrows_deploy.basic_auth_users%</parameter>
-        <parameter key="ibrows_deploy.environment.command.writebasicauthusersfile.path">~/.htpasswd</parameter>
+        <parameter key="ibrows_deploy.environment.command.writebasicauthusersfile.path">%kernel.root_dir%/../web/.htpasswd</parameter>
         <parameter key="ibrows_deploy.environment.command.writebasicauthusersfile.timeout">%ibrows_deploy.environment.command.default.timeout%</parameter>
 
         <!-- shellcommand -->
@@ -143,8 +143,8 @@
         </service>
 
         <service id="ibrows_deploy.environment.command.writebasicauthusersfile" class="Ibrows\DeployBundle\Environment\Command\WriteBasicAuthUsersFileCommand">
-            <argument>%ibrows_deploy.environment.command.writebasicauthusersfile.users%</argument>
             <argument>%ibrows_deploy.environment.command.writebasicauthusersfile.path%</argument>
+            <argument>%ibrows_deploy.environment.command.writebasicauthusersfile.users%</argument>
             <argument>%ibrows_deploy.environment.command.writebasicauthusersfile.timeout%</argument>
             <tag name="ibrows_deploy.command" />
         </service>

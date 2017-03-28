@@ -125,7 +125,7 @@ class WriteBasicAuthUsersFileCommand extends AbstractCommand
     protected function isAccessRestricted()
     {
         $envVar = getenv('SYMFONY_HTACCESS');
-        if ($envVar === "true") {
+        if ("true" === $envVar || false === $envVar) {
             return true;
         }
 

@@ -63,6 +63,18 @@
         <parameter key="ibrows_deploy.environment.command.doctrineschemaupdate.phpExecutablePath">%ibrows_deploy.environment.command.default.phpExecutablePath%</parameter>
         <parameter key="ibrows_deploy.environment.command.doctrineschemaupdate.phpIni">%ibrows_deploy.environment.command.default.phpIni%</parameter>
 
+        <!-- doctrinedatabasecreate -->
+        <parameter key="ibrows_deploy.environment.command.doctrinedatabasecreate.console">%ibrows_deploy.environment.command.default.console%</parameter>
+        <parameter key="ibrows_deploy.environment.command.doctrinedatabasecreate.timeout">%ibrows_deploy.environment.command.default.timeout%</parameter>
+        <parameter key="ibrows_deploy.environment.command.doctrinedatabasecreate.phpExecutablePath">%ibrows_deploy.environment.command.default.phpExecutablePath%</parameter>
+        <parameter key="ibrows_deploy.environment.command.doctrinedatabasecreate.phpIni">%ibrows_deploy.environment.command.default.phpIni%</parameter>
+
+        <!-- doctrinedatabasedrop -->
+        <parameter key="ibrows_deploy.environment.command.doctrinedatabasedrop.console">%ibrows_deploy.environment.command.default.console%</parameter>
+        <parameter key="ibrows_deploy.environment.command.doctrinedatabasedrop.timeout">%ibrows_deploy.environment.command.default.timeout%</parameter>
+        <parameter key="ibrows_deploy.environment.command.doctrinedatabasedrop.phpExecutablePath">%ibrows_deploy.environment.command.default.phpExecutablePath%</parameter>
+        <parameter key="ibrows_deploy.environment.command.doctrinedatabasedrop.phpIni">%ibrows_deploy.environment.command.default.phpIni%</parameter>
+
         <!-- writebasicauthusersfile -->
         <parameter key="ibrows_deploy.environment.command.writebasicauthusersfile.users">%ibrows_deploy.basic_auth_users%</parameter>
         <parameter key="ibrows_deploy.environment.command.writebasicauthusersfile.path">%kernel.root_dir%/../web/.htpasswd</parameter>
@@ -127,6 +139,22 @@
             <argument>%ibrows_deploy.environment.command.doctrineschemaupdate.timeout%</argument>
             <argument>%ibrows_deploy.environment.command.doctrineschemaupdate.phpExecutablePath%</argument>
             <argument>%ibrows_deploy.environment.command.doctrineschemaupdate.phpIni%</argument>
+            <tag name="ibrows_deploy.command" />
+        </service>
+
+        <service id="ibrows_deploy.environment.command.doctrinedatabasecreate" class="Ibrows\DeployBundle\Environment\Command\DoctrineDatabaseCreateCommand">
+            <argument>%ibrows_deploy.environment.command.doctrinedatabasecreate.console%</argument>
+            <argument>%ibrows_deploy.environment.command.doctrinedatabasecreate.timeout%</argument>
+            <argument>%ibrows_deploy.environment.command.doctrinedatabasecreate.phpExecutablePath%</argument>
+            <argument>%ibrows_deploy.environment.command.doctrinedatabasecreate.phpIni%</argument>
+            <tag name="ibrows_deploy.command" />
+        </service>
+
+        <service id="ibrows_deploy.environment.command.doctrinedatabasedrop" class="Ibrows\DeployBundle\Environment\Command\DoctrineDatabaseDropCommand">
+            <argument>%ibrows_deploy.environment.command.doctrinedatabasedrop.console%</argument>
+            <argument>%ibrows_deploy.environment.command.doctrinedatabasedrop.timeout%</argument>
+            <argument>%ibrows_deploy.environment.command.doctrinedatabasedrop.phpExecutablePath%</argument>
+            <argument>%ibrows_deploy.environment.command.doctrinedatabasedrop.phpIni%</argument>
             <tag name="ibrows_deploy.command" />
         </service>
 

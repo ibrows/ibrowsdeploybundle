@@ -69,7 +69,7 @@ abstract class AbstractCommand implements CommandInterface
     {
         $args = $this->getArguments($args);
         $callback = $this->getCallback($args,$output);
-        return $this->execute($this->getCommand($args, $callback),null, (!isset( $args['needSuccessful']) || $args['needSuccessful']) );
+        return $this->execute($this->getCommand($args), $callback, (!isset( $args['needSuccessful']) || $args['needSuccessful']) );
     }
 
     /**

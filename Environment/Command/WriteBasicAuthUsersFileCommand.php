@@ -60,7 +60,7 @@ class WriteBasicAuthUsersFileCommand extends AbstractCommand
         }
 
         $output->writeln('Write '. count($args['users']).' users to '. $args['path']);
-        file_put_contents($this->getRealPath($args['path']), implode("\n\r", $content)."\n\r");
+        file_put_contents($this->getRealPath($args['path']), implode("\n", $content)."\n");
     }
 
     /**

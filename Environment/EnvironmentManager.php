@@ -120,27 +120,24 @@ class EnvironmentManager implements EnvironmentManagerInterface
      */
     protected function getCommandsArray($server, $environment)
     {
-        $initialCommand = array();
         $commands = array();
         $serverEnvironmentString = $server . '_' . $environment;
         foreach ($this->serverEnvironments as $key => $config) {
-            $specialConfig = true;
             if (1 === preg_match("/(\*!\[(.*)\])/", $key)) {
                 $key = preg_replace("/(\*!\[(.*)\])/", "(?!.*$2)", $key);
             } elseif (1 === preg_match("/(\*)/", $key)) {
                 $key = preg_replace("/(\*)/", ".*", $key);
-            } else {
-                $specialConfig = false;
             }
             if (preg_match("/$key/", $serverEnvironmentString)) {
-                if (!$specialConfig) {
-                    $initialCommand += $config;
-                    continue;
+                foreach ($config as $configName => $configArray) {
+                    if (!array_key_exists($configName, $commands)) {
+                        $commands[$configName] = [];
+                    }
+                    $commands[$configName] = array_merge($commands[$configName], $configArray);
                 }
-                $commands += $config;
             }
         }
 
-        return $initialCommand += $commands;
+        return $commands;
     }
 }

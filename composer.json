@@ -14,7 +14,7 @@
         "symfony/process": "~3.0",
         "symfony/console": "~3.0",
         "symfony/framework-bundle": "~3.0",
-        "symfony/security": "~3.0",
+        "symfony/security": "~3.0|^4.0",
         "mikemeier/php-ssh": "1.*"
     }
 }
